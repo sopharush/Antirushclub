@@ -10,24 +10,24 @@
 
 /* ============================================================
    Anti-Rush Club — homepage
-   Palette: browns · blacks · whites   (warm editorial)
+   White-dominant · accents of chocolate brown & black
    Brand wordmark is the focal point.
    ============================================================ */
 
 :root {
-  --black:     #17120d;   /* warm espresso near-black (dark grounds) */
-  --black-2:   #0e0a07;   /* deepest — footer / scene shadows        */
-  --brown:     #574031;   /* walnut                                  */
-  --brown-mid: #7c5c43;   /* mid walnut                              */
-  --tan:       #c8a981;   /* caramel accent (doodles / CTA / rules)  */
-  --tan-soft:  #d9c3a4;
-  --white:     #f8f3ec;   /* warm white (light grounds)              */
-  --white-2:   #efe6d8;   /* slightly deeper white (alt panels)      */
+  --paper:     #faf7f2;   /* warm white — primary ground            */
+  --paper-2:   #f2ebe0;   /* subtle warm panel                      */
+  --white:     #ffffff;
 
-  --ink:       #221a12;   /* text on white   */
-  --ink-soft:  #5b4a39;   /* softened body   */
-  --paper:     #efe7da;   /* text on dark    */
-  --paper-dim: #b6a88f;   /* muted on dark   */
+  --choc:      #3a2318;   /* dark chocolate — primary accent        */
+  --choc-2:    #5c3d29;   /* medium chocolate                       */
+  --black:     #15110e;   /* near-black (footer / strong accents)   */
+
+  --ink:       #241a12;   /* body text on white                     */
+  --ink-soft:  #6a5544;   /* muted body                             */
+
+  --cream:     #f3ecdf;   /* text on chocolate/black grounds        */
+  --cream-dim: #cbb9a1;
 
   --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --sans:  "Jost", "Century Gothic", "Futura", system-ui, sans-serif;
@@ -40,8 +40,8 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--black);
-  color: var(--paper);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--sans);
   font-weight: 300;
   line-height: 1.75;
@@ -75,15 +75,15 @@ h1, h2 {
   position: relative;
   margin: 0;
   overflow: hidden;
-  background: linear-gradient(150deg, #6f5844, #46352a 58%, #241a12);
+  background: linear-gradient(150deg, #7a614a, #4a3729 58%, #2a1f16);
   border-radius: 2px;
 }
 .ph::after {
   content: "";
   position: absolute; inset: 0;
   background:
-    radial-gradient(120% 90% at 22% 15%, rgba(248,243,236,.14), transparent 55%),
-    radial-gradient(120% 90% at 85% 92%, rgba(0,0,0,.42), transparent 60%);
+    radial-gradient(120% 90% at 22% 15%, rgba(255,250,244,.16), transparent 55%),
+    radial-gradient(120% 90% at 85% 92%, rgba(0,0,0,.4), transparent 60%);
   mix-blend-mode: overlay;
 }
 .ph__label {
@@ -93,19 +93,19 @@ h1, h2 {
   font-size: .62rem;
   letter-spacing: .34em;
   text-transform: uppercase;
-  color: rgba(248,243,236,.6);
+  color: rgba(255,250,244,.7);
   z-index: 2; text-align: center; white-space: nowrap;
 }
-.ph[data-tone="a"] { background: linear-gradient(150deg,#7a614a,#4a3729 60%,#241a12); }
-.ph[data-tone="b"] { background: linear-gradient(160deg,#6a5442,#3d2d22); }
-.ph[data-tone="c"] { background: linear-gradient(120deg,#4a3a2c,#2a1f16 70%,#160f0a); }
-.ph[data-tone="d"] { background: linear-gradient(140deg,#8a6b4e,#5a4433 60%,#33261c); }
-.ph[data-tone="e"] { background: linear-gradient(120deg,#a5825d,#75593f 45%,#3f2f22); }
-.ph[data-tone="f"] { background: linear-gradient(160deg,#7a5f45,#43331f); }
-.ph[data-tone="g"] { background: linear-gradient(130deg,#4f3f30,#2a2016 70%,#150e09); }
+.ph[data-tone="a"] { background: linear-gradient(150deg,#8a6d52,#5a4433 60%,#33261c); }
+.ph[data-tone="b"] { background: linear-gradient(160deg,#7a604a,#453325); }
+.ph[data-tone="c"] { background: linear-gradient(120deg,#5a4636,#33261a 70%,#1c130c); }
+.ph[data-tone="d"] { background: linear-gradient(140deg,#9c7a58,#654c38 60%,#3a2b1f); }
+.ph[data-tone="e"] { background: linear-gradient(120deg,#b08c64,#7d6046 45%,#453322); }
+.ph[data-tone="f"] { background: linear-gradient(160deg,#856848,#4a3924); }
+.ph[data-tone="g"] { background: linear-gradient(130deg,#5c4835,#33271a 70%,#1a120b); }
 
 /* ============================================================
-   HEADER
+   HEADER  (on white)
    ============================================================ */
 .site-header {
   display: flex;
@@ -121,7 +121,7 @@ h1, h2 {
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  color: var(--white);
+  color: var(--choc);
 }
 .brand__word {
   font-family: var(--serif);
@@ -129,7 +129,7 @@ h1, h2 {
   font-size: 1.16rem;
   letter-spacing: .08em;
 }
-.brand__flower { width: 18px; height: 18px; color: var(--tan); flex: none; }
+.brand__flower { width: 18px; height: 18px; color: var(--choc-2); flex: none; }
 
 .nav { display: flex; align-items: center; gap: 30px; }
 .nav a {
@@ -138,23 +138,23 @@ h1, h2 {
   font-size: .72rem;
   letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--paper);
+  color: var(--ink);
   text-decoration: none;
-  opacity: .82;
+  opacity: .78;
   transition: opacity .2s, color .2s;
 }
 .nav a:hover { opacity: 1; }
 .nav__cta {
-  border: 1px solid rgba(200,169,129,.55);
+  border: 1px solid rgba(58,35,24,.4);
   border-radius: 40px;
   padding: 9px 20px;
-  color: var(--tan);
+  color: var(--choc);
   opacity: 1 !important;
 }
-.nav__cta:hover { background: var(--tan); color: var(--black); border-color: var(--tan); }
+.nav__cta:hover { background: var(--choc); color: var(--paper); border-color: var(--choc); }
 
 /* ============================================================
-   HERO — brand wordmark as focal point
+   HERO — brand wordmark on white, chocolate type
    ============================================================ */
 .hero {
   position: relative;
@@ -164,14 +164,13 @@ h1, h2 {
   justify-content: center;
   overflow: hidden;
   background:
-    radial-gradient(70% 60% at 50% 46%, #241a12 0%, #17120d 55%, #0e0a07 100%);
+    radial-gradient(72% 62% at 50% 44%, #ffffff 0%, #f7f1e7 62%, #efe4d4 100%);
 }
-/* flanking imagery */
-.hero__img { position: absolute; top: 0; height: 100%; width: 26%; }
-.hero__img--l { left: 0;  -webkit-mask-image: linear-gradient(90deg,#000 40%,transparent); mask-image: linear-gradient(90deg,#000 40%,transparent); }
-.hero__img--r { right: 0; -webkit-mask-image: linear-gradient(270deg,#000 40%,transparent); mask-image: linear-gradient(270deg,#000 40%,transparent); }
-.hero__img::before { content:""; position:absolute; inset:0; background: rgba(14,10,7,.22); z-index:1; }
-.hero__img .ph__label { opacity: .72; top: 42%; }
+/* flanking imagery — slim photo edges that fade into the white ground */
+.hero__img { position: absolute; top: 0; height: 100%; width: 17%; }
+.hero__img--l { left: 0;  -webkit-mask-image: linear-gradient(90deg,#000 22%,transparent 92%); mask-image: linear-gradient(90deg,#000 22%,transparent 92%); }
+.hero__img--r { right: 0; -webkit-mask-image: linear-gradient(270deg,#000 22%,transparent 92%); mask-image: linear-gradient(270deg,#000 22%,transparent 92%); }
+.hero__img .ph__label { top: 40%; opacity: .85; }
 
 /* tilted polaroid accent */
 .hero__polaroid {
@@ -181,14 +180,14 @@ h1, h2 {
   z-index: 3;
 }
 .polaroid {
-  border: 8px solid #0e0a07;
-  box-shadow: 0 16px 38px rgba(0,0,0,.5);
+  border: 8px solid var(--white);
+  box-shadow: 0 18px 40px rgba(58,35,24,.28);
   transform: rotate(-7deg);
   border-radius: 3px;
 }
 .hero__flowers {
   position: absolute; top: 12%; right: 9%;
-  width: 140px; height: 120px; z-index: 3; opacity: .85;
+  width: 140px; height: 120px; z-index: 3; opacity: .9;
   pointer-events: none;
 }
 
@@ -206,13 +205,13 @@ h1, h2 {
   font-size: .74rem;
   letter-spacing: .42em;
   text-transform: uppercase;
-  color: var(--tan);
+  color: var(--choc-2);
   margin: 0 0 24px;
 }
 .wordmark {
   font-family: var(--serif);
   font-weight: 500;
-  color: var(--white);
+  color: var(--choc);
   text-transform: uppercase;
   line-height: .9;
   letter-spacing: .015em;
@@ -220,33 +219,21 @@ h1, h2 {
   text-wrap: balance;
   margin: 0;
 }
-.wordmark__line2 {
-  display: inline-flex;
-  align-items: center;
-  gap: .32em;
-}
+.wordmark__line2 { display: inline-flex; align-items: center; gap: .32em; }
 .wordmark__cup { width: .74em; height: .58em; flex: none; }
 .hero__tag {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 400;
   font-size: clamp(1.05rem, 2.2vw, 1.5rem);
-  color: var(--paper);
+  color: var(--ink);
   margin: 28px 0 0;
   letter-spacing: .01em;
 }
-.hero__rule {
-  width: 54px; height: 1px;
-  background: var(--tan);
-  margin: 34px auto 0;
-  opacity: .8;
-}
-.hero__cta {
-  display: inline-block;
-  margin-top: 34px;
-}
+.hero__rule { width: 54px; height: 1px; background: var(--choc-2); margin: 34px auto 0; opacity: .7; }
+.hero__cta { display: inline-block; margin-top: 34px; }
 
-/* generic pill button */
+/* generic pill button — chocolate on white */
 .btn {
   display: inline-block;
   font-family: var(--sans);
@@ -254,20 +241,20 @@ h1, h2 {
   font-size: .72rem;
   letter-spacing: .24em;
   text-transform: uppercase;
-  color: var(--black);
-  background: var(--tan);
+  color: var(--paper);
+  background: var(--choc);
   text-decoration: none;
   padding: 15px 32px;
   border-radius: 40px;
-  transition: transform .2s, filter .2s;
+  transition: transform .2s, background .2s;
 }
-.btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+.btn:hover { transform: translateY(-2px); background: var(--choc-2); }
 
 /* ============================================================
    WHY  (white, text left / image right)
    ============================================================ */
 .why {
-  background: var(--white);
+  background: var(--paper);
   color: var(--ink);
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -284,7 +271,7 @@ h1, h2 {
   font-size: .72rem;
   letter-spacing: .34em;
   text-transform: uppercase;
-  color: var(--brown-mid);
+  color: var(--choc-2);
   margin: 0 0 22px;
 }
 .why__text p {
@@ -294,13 +281,13 @@ h1, h2 {
   margin: 0 0 22px;
   letter-spacing: .015em;
 }
-.why__text .label { color: var(--ink); margin-top: 10px; }
+.why__text .label { color: var(--choc); margin-top: 10px; }
 .why__img { min-height: 540px; }
 
 /* ============================================================
-   BANNER (full-width scene + squiggle overlay)
+   BANNER (full-width scene + chocolate squiggle overlay)
    ============================================================ */
-.banner { position: relative; background: var(--white); }
+.banner { position: relative; background: var(--paper); }
 .banner__img { width: 100%; aspect-ratio: 16 / 8; }
 .banner__squiggle {
   position: absolute; inset: 0;
@@ -312,7 +299,7 @@ h1, h2 {
    SACRED (white, big header + columns + cutout)
    ============================================================ */
 .sacred {
-  background: var(--white);
+  background: var(--paper);
   color: var(--ink);
   padding: 34px 46px 104px;
 }
@@ -323,6 +310,7 @@ h1, h2 {
   letter-spacing: .01em;
   text-transform: uppercase;
   font-weight: 500;
+  color: var(--choc);
   padding-left: clamp(0px, 22vw, 320px);
 }
 .sacred__cols {
@@ -341,18 +329,18 @@ h1, h2 {
   margin: 0 0 20px;
   letter-spacing: .015em;
 }
-.sacred__col .label { color: var(--ink); }
+.sacred__col .label { color: var(--choc); }
 .sacred__cutout {
   position: absolute; right: 0; bottom: -44px;
   width: 210px; aspect-ratio: 3 / 4.2;
 }
-.cutout { filter: drop-shadow(-8px 12px 18px rgba(0,0,0,.3)); }
+.cutout { filter: drop-shadow(-8px 12px 18px rgba(58,35,24,.24)); }
 
 /* ============================================================
-   CLOSING (dark, tan title + body + image)
+   CLOSING (chocolate accent block, cream type)
    ============================================================ */
 .closing {
-  background: var(--black-2);
+  background: var(--choc);
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   align-items: center;
@@ -361,7 +349,7 @@ h1, h2 {
 }
 .closing__inner { max-width: 720px; }
 .closing__title {
-  color: var(--tan);
+  color: var(--cream);
   font-size: clamp(1.8rem, 4vw, 3.15rem);
   line-height: 1.08;
   text-transform: uppercase;
@@ -372,16 +360,20 @@ h1, h2 {
   font-size: .9rem;
   line-height: 1.95;
   max-width: 560px;
-  color: var(--paper);
+  color: var(--cream);
   margin: 0 0 20px;
   letter-spacing: .015em;
 }
-.closing__body .label { color: var(--tan); }
-.closing__body .btn { margin-top: 14px; }
-.closing__img { aspect-ratio: 3 / 3.4; height: 100%; min-height: 360px; }
+.closing__body .label { color: var(--cream-dim); }
+.closing__body .btn { margin-top: 14px; background: var(--cream); color: var(--choc); }
+.closing__body .btn:hover { background: var(--white); }
+.closing__img {
+  aspect-ratio: 3 / 3.4; height: 100%; min-height: 360px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.28);
+}
 
 /* ============================================================
-   FOOTER
+   FOOTER  (near-black accent)
    ============================================================ */
 .site-footer {
   background: var(--black);
@@ -391,14 +383,13 @@ h1, h2 {
   flex-wrap: wrap;
   gap: 16px;
   padding: 42px 46px;
-  border-top: 1px solid rgba(200,169,129,.16);
 }
-.site-footer .brand__word { font-size: 1.05rem; letter-spacing: .16em; color: var(--white); }
+.site-footer .brand__word { font-size: 1.05rem; letter-spacing: .16em; color: var(--cream); }
 .foot__motto {
   font-family: var(--serif);
   font-style: italic;
   font-size: 1rem;
-  color: var(--paper);
+  color: var(--cream);
   opacity: .85;
 }
 .foot__copy {
@@ -406,7 +397,8 @@ h1, h2 {
   font-size: .66rem;
   letter-spacing: .24em;
   text-transform: uppercase;
-  opacity: .55;
+  color: var(--cream);
+  opacity: .5;
 }
 
 /* ============================================================
@@ -418,7 +410,7 @@ h1, h2 {
   .nav a:not(.nav__cta) { display: none; }
 
   .hero { min-height: 92vh; }
-  .hero__img { width: 42%; opacity: .5; }
+  .hero__img { width: 40%; opacity: .55; }
   .hero__polaroid, .hero__flowers { display: none; }
   .wordmark { font-size: clamp(3rem, 20vw, 6rem); }
 
@@ -477,7 +469,7 @@ h1, h2 {
 
     <!-- doodle flowers -->
     <svg class="doodle hero__flowers" viewBox="0 0 220 200" aria-hidden="true">
-      <g fill="none" stroke="#c8a981" stroke-width="2" stroke-linecap="round">
+      <g fill="none" stroke="#3a2318" stroke-width="2" stroke-linecap="round">
         <g>
           <circle cx="60" cy="40" r="9"/>
           <path d="M60 31c-4-10 4-18 0-26 -4 8 4 16 0 26z"/>
@@ -502,7 +494,7 @@ h1, h2 {
         Anti-Rush
         <span class="wordmark__line2">Club
           <svg class="wordmark__cup" viewBox="0 0 130 100" aria-hidden="true">
-            <g fill="none" stroke="#f8f3ec" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <g fill="none" stroke="#3a2318" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
               <path d="M28 44 h56 v20 a24 24 0 0 1 -24 24 h-8 a24 24 0 0 1 -24 -24 z"/>
               <path d="M84 50 h12 a11 11 0 0 1 0 22 h-6"/>
               <path d="M44 30 c-4-6 4-10 0-16"/>
@@ -538,7 +530,7 @@ h1, h2 {
     </figure>
     <svg class="doodle banner__squiggle" viewBox="0 0 1200 520" preserveAspectRatio="none" aria-hidden="true">
       <path d="M40 260 C 180 80, 300 80, 380 240 S 560 470, 680 300 S 880 90, 1000 250 S 1150 430, 1160 300"
-            fill="none" stroke="#c8a981" stroke-width="4" stroke-linecap="round"/>
+            fill="none" stroke="#f3ecdf" stroke-width="4" stroke-linecap="round"/>
     </svg>
   </section>
 
