@@ -589,6 +589,7 @@ const SECTIONS_AFTER = [
    {title:"Insurance", table:{cols:["Type","Provider","Member / policy #","Phone"], rows:3, key:"he.ins",
      seed:[["Health","","",""],["Dental","","",""],["Vision","","",""]]}},
    {title:"Medication tracker", table:{cols:["Who","Medication","Dose","Times / notes"], rows:6, key:"he.meds"}},
+   {title:"Doctor & dentist visits log", table:{cols:["Who","Provider","Date","Reason / follow-up"], rows:6, key:"he.visits"}},
    {title:"Vaccination & records", grid:1, fields:[{t:"area",k:"he.records",label:"Where records live",ph:"Immunization cards, growth charts, medical history — where they're kept"}]},
    {title:"Emergency action plans", grid:1, fields:[{t:"area",k:"he.action",label:"",ph:"Allergy/asthma action steps, where the EpiPen/inhaler is, and when to use it"}]},
   ]
@@ -679,6 +680,7 @@ const SECTIONS_AFTER = [
      {t:"area",k:"we.move",label:"How I'll move this week",ph:"Walks, workouts, stretching — keep it kind"},
      {t:"area",k:"we.food",label:"Nourishment notes",ph:"Meals & snacks that make me feel good"},
    ]},
+   {title:"Measurements & weight log", note:"Optional — track it your way, or skip it entirely.", table:{cols:["Date","Weight","Measurements / notes"], rows:6, key:"we.weight"}},
    {title:"Rest & reset rituals", grid:2, fields:[
      {t:"area",k:"we.morning",label:"Morning ritual",ph:"How I want to start the day"},
      {t:"area",k:"we.night",label:"Night reset ritual",ph:"How I wind down"},
