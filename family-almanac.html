@@ -343,7 +343,11 @@ table.grid-tbl{width:100%;border-collapse:collapse;font-size:.85rem;min-width:52
         <div class="sheet__titles"><h2>What's Inside</h2><p>Flip to any section from the sidebar, or print the whole almanac and keep it on the kitchen counter.</p></div>
       </div>
       <ol class="checks" id="toc-list"></ol>
-      <p class="hint">Fill it in on screen — your answers save automatically in this browser — then print anytime. Or print it blank and write by hand.</p>
+      <div class="callout" style="margin-top:22px;"><strong>How to use this book</strong>Fill it in on screen — your answers save automatically in this browser — then print anytime. Or print it blank and write by hand. Start with the family profiles and the emergency pages; let the rest fill in over cups of coffee.</div>
+      <div class="grid g2" style="margin-top:18px;">
+        <div class="field"><label>If found, please return to</label><div class="fill" contenteditable="true" data-key="contents.iffound" data-ph="Name"></div></div>
+        <div class="field"><label>Or call</label><div class="fill" contenteditable="true" data-key="contents.ifcall" data-ph="Phone"></div></div>
+      </div>
     </section>
 
     <div id="sections"></div>
@@ -464,6 +468,30 @@ const SECTIONS_AFTER = [
   ]
  },
  {
+  id:"weekreset", tab:"Weekly Reset", title:"The Weekly Reset",
+  sub:"A gentle rhythm, not a rigid schedule — a focus for each day so the week never piles up.",
+  blocks:[
+   {callout:{title:"The busy-family golden rule", text:"Don't aim for spotless. Aim for functional. A little each day beats one big scramble — and anyone in the house can follow along."}},
+   {title:"The 15-minute daily reset", note:"The quick loop that keeps the whole house from tipping over.", checks:["Make the beds","Clear & wipe counters","Quick toy / floor pickup","One load of laundry through","Dishes done, sink empty","Trash checked","Tomorrow prep — bags, lunches, outfits"], cols:2, key:"wr.daily"},
+   {title:"A focus for each day", note:"Trade a whole-house clean for one gentle focus a day.", table:{cols:["Day","Today's focus","Notes"], rows:7, key:"wr.days",
+     seed:[["Monday","Kitchen — counters, fridge, floors",""],["Tuesday","Living areas — tidy, dust, vacuum",""],["Wednesday","Bedrooms — beds, surfaces, laundry away",""],["Thursday","Bathrooms — sinks, toilets, mirrors",""],["Friday","Laundry & paper — catch-up, mail, files",""],["Saturday","Catch-up & errands — finish what's left",""],["Sunday","Rest & plan — prep the week, recharge",""]]}},
+   {title:"Clutter hotspots — check daily", checks:["Kitchen counters","Dining table","Entryway shoes & bags","Couch / coffee table","Bathroom counters","Bedroom floors","Junk drawer","Car"], cols:2, key:"wr.hot"},
+  ]
+ },
+ {
+  id:"declutter", tab:"Declutter", title:"Room-by-Room Declutter",
+  sub:"One room at a time, one timer at a time. Progress over perfection.",
+  blocks:[
+   {callout:{title:"Our golden rules", text:"Everything needs a home · If you don't use it, love it, or need it — let it go · Finish one room before starting another · Set a 15-minute timer · Less stuff = less stress."}},
+   {title:"Entryway & living areas", checks:["Shoes no one wears","Broken items & trash","Old magazines / mail","Décor you no longer love","Toys to donate","Clear flat surfaces","A basket per person"], cols:2, key:"dc.living"},
+   {title:"Kitchen & dining", checks:["Expired pantry food","Duplicate utensils","Unused gadgets","Chipped dishes / mugs","The junk drawer","Label pantry bins","Clear the counters"], cols:2, key:"dc.kitchen"},
+   {title:"Bedrooms & closets", checks:["Clothes that don't fit","Old socks / undergarments","Clear the nightstands","Matching hangers","Anything unworn in a year","Shoes together","Seasonal bins"], cols:2, key:"dc.bed"},
+   {title:"Kids' rooms & toys", checks:["Broken toys","Outgrown clothes","Toys under the bed","Limit stuffed animals","Toy bins by category","Easy-access drawers"], cols:2, key:"dc.kids"},
+   {title:"Bathrooms, laundry & garage", checks:["Expired makeup / medicine","Empty bottles","Under-sink baskets","Empty detergent containers","Broken tools tossed","Clear, labeled bins"], cols:2, key:"dc.other"},
+   {title:"Donation & giveaway log", table:{cols:["Item","Where it went","Date"], rows:6, key:"dc.donate"}},
+  ]
+ },
+ {
   id:"kitchen", tab:"Kitchen", title:"Kitchen & Pantry",
   sub:"What you always keep and what you're out of — so the grocery list writes itself.",
   blocks:[
@@ -498,6 +526,17 @@ const SECTIONS_AFTER = [
    {title:"Year at a glance", table:{cols:["Month","What's happening"], rows:12, key:"ca.year",
      seed:[["January",""],["February",""],["March",""],["April",""],["May",""],["June",""],["July",""],["August",""],["September",""],["October",""],["November",""],["December",""]]}},
    {title:"Standing rhythms", checks:["Trash & recycling out","Grocery run / delivery","Meal prep","Church / faith rhythm","Family day / rest","Weekly reset","Date night"], cols:2, key:"ca.std"},
+  ]
+ },
+ {
+  id:"chores", tab:"Chores", title:"Chores & Family Teamwork",
+  sub:"Many hands make a light home. Everyone has a part — even the little ones.",
+  blocks:[
+   {callout:{title:"The point isn't perfect", text:"It's teamwork. When everyone helps, no one carries it all. Post this where the kids can see it."}},
+   {title:"Weekly chore chart", note:"Write each child's initial on the day it's their turn.", table:{cols:["Chore","M","T","W","T","F","S","S"], rows:10, key:"ch.chart"}},
+   {title:"Chore ideas — little kids", checks:["Pick up toys","Put laundry in the basket","Wipe the table","Feed the pets","Make their bed","Put shoes away","Help set the table"], cols:1, key:"ch.little"},
+   {title:"Chore ideas — big kids", checks:["Vacuum","Fold & put away laundry","Empty / load the dishwasher","Take out the trash","Clean bathroom counters","Sweep or mop","Help with dinner","Yard & pet care"], cols:1, key:"ch.big"},
+   {title:"Rewards & allowance", grid:1, fields:[{t:"area",k:"ch.reward",label:"",ph:"How chores connect to allowance, screen time, or privileges — your family's system"}]},
   ]
  },
  {
@@ -565,9 +604,34 @@ const SECTIONS_AFTER = [
    {title:"Other memberships & cards", table:{cols:["Membership","Member / card #","Phone / app","Notes"], rows:5, key:"fi.mem",
      seed:[["Gym","","",""],["Library","","",""],["Warehouse club","","",""],["Streaming","","",""]]}},
    {title:"Subscriptions", table:{cols:["Service","Cost","Renews","Notes"], rows:5, key:"fi.subs"}},
+   {title:"Monthly budget — income & expenses", note:"A simple picture: what comes in, what goes out.", table:{cols:["Category","Budgeted","Actual"], rows:10, key:"fi.budget",
+     seed:[["Income","",""],["Housing","",""],["Utilities","",""],["Groceries","",""],["Transportation","",""],["Insurance","",""],["Childcare","",""],["Giving / tithe","",""],["Fun / eating out","",""],["To savings","",""]]}},
+   {title:"Savings goals", table:{cols:["Goal","Target","Saved so far","By when"], rows:5, key:"fi.save"}},
+   {title:"Debt payoff tracker", table:{cols:["Debt","Balance","Min. payment","Target payoff"], rows:5, key:"fi.debt"}},
+   {title:"Bank & card info", note:"Last 4 digits only — never full numbers or PINs.", table:{cols:["Account / card","Bank","Last 4","Notes"], rows:5, key:"fi.bank"}},
    {title:"Savings & important docs", grid:2, fields:[
      {t:"area",k:"fi.savings",label:"Savings goals",ph:"Sinking funds, big upcoming expenses"},
      {t:"area",k:"fi.docs",label:"Important documents — where kept",ph:"Birth certs, passports, wills, tax docs, safe/box location"},
+   ]},
+  ]
+ },
+ {
+  id:"digital", tab:"Documents", title:"Digital Life & Important Documents",
+  sub:"Where everything lives — so anyone you trust can find it in an emergency, safely.",
+  blocks:[
+   {"security-note":true},
+   {title:"Digital account inventory", note:"Note where recovery info is kept — never the passwords themselves.", table:{cols:["Account","Username / email","Recovery / where hints kept","Notes"], rows:8, key:"dg.accts",
+     seed:[["Email","","",""],["Cloud / photos","","",""],["Banking app","","",""],["Social media","","",""]]}},
+   {title:"Password manager", grid:2, fields:[
+     {t:"line",k:"dg.pm",label:"Which one we use",ph:"e.g. 1Password, Bitwarden"},
+     {t:"line",k:"dg.pmwhere",label:"Where the master key is kept",ph:"A location, not the password"},
+   ]},
+   {title:"Identity documents — where they live", note:"Store copies here; keep originals somewhere safe.", table:{cols:["Document","For whom","Originals location"], rows:8, key:"dg.docs",
+     seed:[["Birth certificate","",""],["Passport","",""],["Social security card","",""],["Driver's license","",""],["Marriage certificate","",""],["Home deed / lease","",""],["Vehicle titles","",""]]}},
+   {title:"Insurance policies", table:{cols:["Type","Provider","Policy #","Renewal"], rows:6, key:"dg.ins",
+     seed:[["Home / renters","","",""],["Auto","","",""],["Health","","",""],["Life","","",""],["Disability","","",""]]}},
+   {title:"Legal & legacy (optional)", grid:1, fields:[
+     {t:"area",k:"dg.legal",label:"Where the important papers & people are",ph:"Will & power of attorney location, beneficiaries, lawyer / financial advisor, letter of intent — locations and contacts, not sensitive numbers"},
    ]},
   ]
  },
@@ -578,6 +642,9 @@ const SECTIONS_AFTER = [
    {title:"School / teacher contacts", table:{cols:["Child","School / grade","Teacher","Contact"], rows:5, key:"ed.school"}},
    {title:"Homeschool curriculum", table:{cols:["Subject","Curriculum / resource","For whom","Notes"], rows:6, key:"ed.curr"}},
    {title:"Reading & library log", table:{cols:["Title","Who","Started","Finished / due"], rows:6, key:"ed.read"}},
+   {title:"Weekly class schedule", note:"Each child's week at a glance.", table:{cols:["Time","Monday","Tuesday","Wednesday","Thursday","Friday"], rows:6, key:"ed.sched"}},
+   {title:"Friends & carpool", table:{cols:["Child","Friend","Parent","Phone"], rows:5, key:"ed.friends"}},
+   {title:"Grades & progress", table:{cols:["Child","Subject","Progress / grade","Notes"], rows:5, key:"ed.grades"}},
    {title:"Activities & goals", grid:2, fields:[
      {t:"area",k:"ed.extra",label:"Extracurriculars & field trips",ph:"Clubs, lessons, planned trips"},
      {t:"area",k:"ed.goals",label:"Learning goals",ph:"What you're working toward this year"},
@@ -599,6 +666,28 @@ const SECTIONS_AFTER = [
      {t:"line",k:"fa.pastor",label:"Pastor / contact",ph:"Name + phone"},
    ]},
    {title:"Gratitude & answered prayers", grid:1, fields:[{t:"area",k:"fa.gratitude",label:"",ph:"A place to remember the good — what God has done"}]},
+  ]
+ },
+ {
+  id:"wellness", tab:"Wellness", title:"Wellness & Self-Care",
+  sub:"You can't pour from an empty cup. A few pages for the one who holds it all together.",
+  blocks:[
+   {callout:{title:"A gentle reminder", text:"Caring for yourself isn't selfish — it's how the whole home stays steady. Small rhythms count."}},
+   {title:"Daily habits tracker", note:"Mark the little things that keep you well.", table:{cols:["Habit","M","T","W","T","F","S","S"], rows:8, key:"we.habit",
+     seed:[["Water","","","","","","",""],["Movement","","","","","","",""],["Outside / sunlight","","","","","","",""],["Quiet / prayer","","","","","","",""],["Sleep by ___","","","","","","",""]]}},
+   {title:"Movement & nourishment", grid:2, fields:[
+     {t:"area",k:"we.move",label:"How I'll move this week",ph:"Walks, workouts, stretching — keep it kind"},
+     {t:"area",k:"we.food",label:"Nourishment notes",ph:"Meals & snacks that make me feel good"},
+   ]},
+   {title:"Rest & reset rituals", grid:2, fields:[
+     {t:"area",k:"we.morning",label:"Morning ritual",ph:"How I want to start the day"},
+     {t:"area",k:"we.night",label:"Night reset ritual",ph:"How I wind down"},
+   ]},
+   {title:"Dreams & lists", grid:2, fields:[
+     {t:"area",k:"we.wish",label:"Wish list & bucket list",ph:"Things I'd love, someday dreams"},
+     {t:"area",k:"we.read",label:"Books & shows to enjoy",ph:"To read / to watch"},
+   ]},
+   {title:"Reflection & wins", grid:1, fields:[{t:"area",k:"we.wins",label:"",ph:"What went well, what I'm grateful for, how I'm really doing"}]},
   ]
  },
  {
@@ -629,6 +718,13 @@ const SECTIONS_AFTER = [
      {t:"area",k:"ho.budget",label:"Holiday budget & decor",ph:"Spending plan, where decor is stored"},
    ]},
    {title:"Hosting & Sunday dinner planner", grid:1, fields:[{t:"area",k:"ho.host",label:"",ph:"Guest list, menu, prep timeline, what to delegate"}]},
+   {title:"Party planning sheet", grid:2, fields:[
+     {t:"line",k:"ho.pwhat",label:"Occasion & date",ph:"What we're celebrating"},
+     {t:"line",k:"ho.pwho",label:"Guest count",ph:"How many"},
+     {t:"area",k:"ho.pfood",label:"Menu & drinks",ph:"What to make / order"},
+     {t:"area",k:"ho.ptodo",label:"To-do & supplies",ph:"Decor, cake, activities, what to buy"},
+   ]},
+   {title:"Holiday dinner planner", table:{cols:["Dish","Who's bringing","Make-ahead?","Notes"], rows:8, key:"ho.dinner"}},
   ]
  },
  {
@@ -679,6 +775,7 @@ const SECTIONS_AFTER = [
    {title:"Sizes & measurements", table:{cols:["Item","Size / dimension","Notes"], rows:6, key:"re.sizes",
      seed:[["Air filters","",""],["Light bulbs","",""],["Batteries","",""],["Furnace filter","",""]]}},
    {title:"Appliances", table:{cols:["Appliance","Brand / model","Purchased","Warranty / notes"], rows:5, key:"re.appl"}},
+   {title:"Home inventory (for insurance)", note:"A quick record of valuables — a lifesaver if you ever file a claim.", table:{cols:["Item","Room","Serial / value","Notes"], rows:8, key:"re.inv"}},
   ]
  },
  {
@@ -707,11 +804,15 @@ const ASK_ITEMS = [
   ["What's the Wi-Fi password?","See","Home Information"],
   ["When's trash day?","See","Home Information"],
   ["What's our museum member ID?","See","Finances & Memberships"],
-  ["Who's driving to practice?","See","Calendar"],
-  ["What chores need doing?","See","Cleaning Systems"],
+  ["Who's driving to practice?","See","Calendar & Education"],
+  ["Whose turn is it for chores?","See","Chores"],
+  ["What are we cleaning today?","See","the Weekly Reset"],
+  ["What's the budget this month?","See","Finances"],
   ["What size shoes do they wear?","See","each child's profile"],
   ["Who do I call if the sink floods?","See","Emergency & Maintenance"],
-  ["Where are the important documents?","See","Finances & Prepared"],
+  ["Where are the passports & documents?","See","Digital Life & Documents"],
+  ["What's the plan for the party?","See","Holidays"],
+  ["When's the next appointment?","See","Calendar"],
   ["What's for Sunday dinner?","See","Meals & Holidays"],
 ];
 
