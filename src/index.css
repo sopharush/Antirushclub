@@ -3,22 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --paper: #faf7f2;
-  --paper-2: #f2ebe0;
-  --choc: #3a2318;
-  --choc-2: #5c3d29;
-  --ink: #241a12;
-  --ink-soft: #6a5544;
-  --cream: #f3ecdf;
-  --cream-dim: #cbb9a1;
-  --black-2: #15110e;
+  --cream: #efe3c8;
+  --cream-2: #e7d6b4;
+  --sand: #d8c29a;
+  --caramel: #c0904f;
+  --sienna: #a85436;
+  --espresso: #281a10;
+  --cocoa: #3f2a1a;
+  --ink: #2b1d12;
+  --ink-soft: #6c523a;
+  --paper: #f0e5ce;
+  --paper-dim: #c7b393;
 }
 
 html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--cream);
   color: var(--ink);
   font-family: 'Jost', system-ui, sans-serif;
   font-weight: 300;
@@ -28,13 +30,13 @@ body {
   overflow-x: hidden;
 }
 
-::selection { background: var(--choc); color: var(--paper); }
+::selection { background: var(--sienna); color: var(--paper); }
 
 h1, h2, h3 {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 500;
   font-optical-sizing: auto;
-  font-variation-settings: 'opsz' 144, 'SOFT' 4, 'WONK' 1;
+  font-variation-settings: 'opsz' 144, 'SOFT' 6, 'WONK' 1;
   margin: 0;
 }
 
@@ -49,30 +51,26 @@ h1, h2, h3 {
 .serif { font-family: 'Fraunces', Georgia, serif; }
 .italic-serif { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400; }
 
-/* ---- kinetic masked lines ---- */
+/* ---- kinetic masked lines (GSAP owns the transform) ---- */
 .mask-line { display: block; overflow: hidden; }
 .mask-inner { display: block; will-change: transform; }
 
-/* ---- pre-reveal hidden states: applied ONLY when JS is on ----
-   NOTE: mask-inner is hidden by GSAP (not CSS) so GSAP owns the transform
-   baseline — a CSS transform here would be read as a baseline offset and
-   added to the animated yPercent, leaving the line stuck inside the mask. */
+/* ---- pre-reveal hidden states: applied ONLY when JS is on ---- */
 html.js [data-reveal] { opacity: 0; visibility: hidden; }
-
 @media (prefers-reduced-motion: reduce) {
   html.js [data-reveal] { opacity: 1; visibility: visible; }
 }
 
-/* ---- film grain overlay ---- */
+/* ---- film grain ---- */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.045;
+  opacity: 0.08;
   mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 160px 160px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 170px 170px;
   animation: grain-shift 6s steps(6) infinite;
 }
 @keyframes grain-shift {
@@ -85,14 +83,42 @@ html.js [data-reveal] { opacity: 0; visibility: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .grain { animation: none; } }
 
-/* ---- thin rule ---- */
-.hairline { height: 1px; background: currentColor; opacity: 0.25; }
+/* ---- global warm vignette (nostalgic film edge) ---- */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  background: radial-gradient(130% 110% at 50% 42%, transparent 55%, rgba(40,26,16,0.28) 100%);
+}
+
+/* ---- slow Ken-Burns drift for photo backdrops ---- */
+.kenburns { animation: kenburns 28s ease-in-out infinite alternate; will-change: transform; }
+@keyframes kenburns {
+  from { transform: scale(1.06) translate(0, 0); }
+  to { transform: scale(1.16) translate(-2%, -1.5%); }
+}
+@media (prefers-reduced-motion: reduce) { .kenburns { animation: none; transform: scale(1.06); } }
+
+/* ---- vintage photo frame ---- */
+.vframe {
+  border: 7px solid var(--paper);
+  box-shadow: 0 24px 60px rgba(40,26,16,0.4);
+  border-radius: 2px;
+}
+
+/* ---- hairline ---- */
+.hairline { height: 1px; background: currentColor; opacity: 0.28; }
 
 /* ---- focus ---- */
-:focus-visible { outline: 2px solid var(--choc); outline-offset: 3px; border-radius: 2px; }
+:focus-visible { outline: 2px solid var(--sienna); outline-offset: 3px; border-radius: 2px; }
 
 /* ---- marquee ---- */
 .marquee { display: flex; overflow: hidden; white-space: nowrap; user-select: none; }
-.marquee__track { display: flex; flex: none; gap: 0; animation: marquee 48s linear infinite; }
+.marquee__track { display: flex; flex: none; gap: 0; animation: marquee 55s linear infinite; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } }
+
+/* ---- horizontal-scroll fallback (reduced motion / no-pin) ---- */
+.hstrip { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.hstrip > * { scroll-snap-align: start; }

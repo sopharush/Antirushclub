@@ -4,15 +4,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        paper: '#faf7f2',
-        paper2: '#f2ebe0',
-        choc: '#3a2318',
-        choc2: '#5c3d29',
-        ink: '#241a12',
-        inksoft: '#6a5544',
-        cream: '#f3ecdf',
-        creamdim: '#cbb9a1',
-        black2: '#15110e',
+        cream: '#efe3c8',
+        cream2: '#e7d6b4',
+        sand: '#d8c29a',
+        caramel: '#c0904f',
+        sienna: '#a85436',
+        espresso: '#281a10',
+        cocoa: '#3f2a1a',
+        ink: '#2b1d12',
+        inksoft: '#6c523a',
+        paper: '#f0e5ce',
+        paperdim: '#c7b393',
       },
       fontFamily: {
         serif: ['Fraunces', 'Georgia', 'serif'],

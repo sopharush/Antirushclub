@@ -11,6 +11,7 @@ import Hero from './components/Hero'
 import Footer from './components/Footer'
 
 import Why from './sections/Why'
+import SeriesScroll from './sections/SeriesScroll'
 import Pause from './sections/Pause'
 import Values from './sections/Values'
 import Experience from './sections/Experience'
@@ -35,13 +36,15 @@ export default function App() {
   return (
     <>
       <Grain />
+      <div className="vignette" aria-hidden="true" />
       <Preloader />
       <Nav />
       <main>
         <Hero />
         <Why />
-        <Pause />
+        <SeriesScroll />
         <Values />
+        <Pause />
         <Experience />
         <Invitation />
       </main>

@@ -3,61 +3,49 @@ import * as THREE from 'three'
 import { prefersReducedMotion } from '../lib/motion'
 
 /**
- * A calm warm "mist" — slow fractal-noise haze in cream/tan over the paper
- * ground. Low contrast by design so the chocolate type stays crisp on top.
- * Caps DPR, pauses when offscreen or tab hidden, renders one static frame
- * under reduced motion, and disposes on unmount.
+ * Warm film "light leak" — slow drifting amber/gold glow, screen-blended over
+ * the hero photograph so it adds nostalgic light without washing out the type.
+ * DPR-capped, pauses offscreen/hidden, one static frame under reduced motion,
+ * disposes on unmount.
  */
 const FRAG = /* glsl */ `
 precision highp float;
 uniform float uTime;
 uniform vec2 uRes;
 
-// cream / warm-white / faint tan — stays close to the paper ground
-const vec3 CREAM = vec3(0.980, 0.969, 0.949);
-const vec3 WARM  = vec3(0.937, 0.894, 0.831);
-const vec3 TAN   = vec3(0.886, 0.812, 0.706);
+const vec3 AMBER = vec3(0.95, 0.62, 0.28);
+const vec3 GOLD  = vec3(1.0, 0.82, 0.45);
+const vec3 EMBER = vec3(0.78, 0.33, 0.16);
 
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
 float noise(vec2 p){
   vec2 i = floor(p); vec2 f = fract(p);
-  float a = hash(i);
-  float b = hash(i + vec2(1.0, 0.0));
-  float c = hash(i + vec2(0.0, 1.0));
-  float d = hash(i + vec2(1.0, 1.0));
-  vec2 u = f * f * (3.0 - 2.0 * f);
-  return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+  float a = hash(i), b = hash(i + vec2(1.0,0.0)), c = hash(i + vec2(0.0,1.0)), d = hash(i + vec2(1.0,1.0));
+  vec2 u = f*f*(3.0-2.0*f);
+  return mix(a,b,u.x) + (c-a)*u.y*(1.0-u.x) + (d-b)*u.x*u.y;
 }
-float fbm(vec2 p){
-  float v = 0.0; float amp = 0.5;
-  for (int i = 0; i < 5; i++){ v += amp * noise(p); p *= 2.02; amp *= 0.5; }
-  return v;
-}
+float fbm(vec2 p){ float v=0.0, a=0.5; for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.03; a*=0.5; } return v; }
 
 void main(){
   vec2 uv = gl_FragCoord.xy / uRes.xy;
-  vec2 p = uv;
-  p.x *= uRes.x / uRes.y;
+  vec2 p = uv; p.x *= uRes.x / uRes.y;
+  float t = uTime * 0.03;
 
-  float t = uTime * 0.025;
-  vec2 q = vec2(fbm(p * 1.6 + vec2(0.0, t)), fbm(p * 1.6 + vec2(5.2, -t)));
-  float f = fbm(p * 2.1 + q * 1.4 + vec2(t * 0.5, 0.0));
+  vec2 q = vec2(fbm(p*1.3 + vec2(0.0,t)), fbm(p*1.3 + vec2(4.0,-t*0.8)));
+  float f = fbm(p*1.8 + q*1.6 + vec2(t*0.4, t*0.2));
 
-  vec3 col = mix(CREAM, WARM, smoothstep(0.25, 0.85, f));
-  col = mix(col, TAN, smoothstep(0.62, 1.0, f) * 0.5);
+  // glow pools, strongest toward the upper corners (classic light-leak feel)
+  float corner = smoothstep(0.2, 1.0, (1.0 - uv.y)) * (0.5 + 0.5*abs(uv.x-0.5)*2.0);
+  float glow = smoothstep(0.52, 1.0, f) * (0.55 + 0.75*corner);
 
-  // soft top-down light + gentle edge warmth (vignette)
-  col += (1.0 - uv.y) * 0.015;
-  float d = distance(uv, vec2(0.5, 0.46));
-  col = mix(col, WARM, smoothstep(0.35, 0.95, d) * 0.35);
+  vec3 col = mix(EMBER, AMBER, smoothstep(0.4, 0.9, f));
+  col = mix(col, GOLD, smoothstep(0.75, 1.0, f));
+  col *= glow;
 
   gl_FragColor = vec4(col, 1.0);
 }
 `
-
-const VERT = /* glsl */ `
-void main(){ gl_Position = vec4(position, 1.0); }
-`
+const VERT = /* glsl */ `void main(){ gl_Position = vec4(position, 1.0); }`
 
 export default function HeroShader() {
   const ref = useRef<HTMLDivElement>(null)
@@ -65,27 +53,28 @@ export default function HeroShader() {
   useEffect(() => {
     const mount = ref.current
     if (!mount) return
-
     const reduced = prefersReducedMotion()
-    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75))
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance', alpha: true })
+    const dpr = Math.min(window.devicePixelRatio, 1.75)
+    renderer.setPixelRatio(dpr)
     renderer.setSize(mount.clientWidth, mount.clientHeight)
     mount.appendChild(renderer.domElement)
-    renderer.domElement.style.width = '100%'
-    renderer.domElement.style.height = '100%'
-    renderer.domElement.style.display = 'block'
+    Object.assign(renderer.domElement.style, {
+      width: '100%', height: '100%', display: 'block',
+      mixBlendMode: 'screen', opacity: '0.6',
+    })
 
     const scene = new THREE.Scene()
     const camera = new THREE.Camera()
     const uniforms = {
       uTime: { value: 0 },
-      uRes: { value: new THREE.Vector2(mount.clientWidth, mount.clientHeight) },
+      uRes: { value: new THREE.Vector2(mount.clientWidth * dpr, mount.clientHeight * dpr) },
     }
     const material = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms })
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material)
     scene.add(mesh)
 
-    const dpr = Math.min(window.devicePixelRatio, 1.75)
     const resize = () => {
       const w = mount.clientWidth, h = mount.clientHeight
       renderer.setSize(w, h)
@@ -94,8 +83,7 @@ export default function HeroShader() {
     resize()
     window.addEventListener('resize', resize)
 
-    let raf = 0
-    let visible = true
+    let raf = 0, visible = true
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting }, { threshold: 0 })
     io.observe(mount)
 
@@ -106,13 +94,8 @@ export default function HeroShader() {
       uniforms.uTime.value = (performance.now() - start) / 1000
       renderer.render(scene, camera)
     }
-
-    if (reduced) {
-      uniforms.uTime.value = 12
-      renderer.render(scene, camera)
-    } else {
-      raf = requestAnimationFrame(loop)
-    }
+    if (reduced) { uniforms.uTime.value = 8; renderer.render(scene, camera) }
+    else raf = requestAnimationFrame(loop)
 
     return () => {
       cancelAnimationFrame(raf)

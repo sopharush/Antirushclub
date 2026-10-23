@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
 const LINKS = [
-  { label: 'The Club', href: '#why' },
-  { label: 'Values', href: '#values' },
+  { label: 'Our Why', href: '#why' },
+  { label: 'The Series', href: '#series' },
   { label: 'The Experience', href: '#experience' },
 ]
 
@@ -16,29 +16,31 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const textCls = scrolled ? 'text-ink' : 'text-cream'
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
-        scrolled ? 'bg-paper/85 backdrop-blur-md border-b border-choc/10' : 'bg-transparent'
+        scrolled ? 'bg-cream/90 backdrop-blur-md border-b border-cocoa/10' : 'bg-transparent'
       }`}
     >
       <div className="mx-auto flex max-w-[1240px] items-center justify-between px-6 py-5 md:px-10">
-        <a href="#top" className="serif text-choc text-[1.15rem] font-semibold tracking-[0.08em]">
+        <a href="#top" className={`serif text-[1.15rem] font-semibold tracking-[0.08em] transition-colors duration-500 ${textCls}`}>
           Anti-Rush Club
         </a>
         <nav className="flex items-center gap-7">
           {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="kicker hidden text-ink/75 transition-opacity hover:opacity-100 md:inline"
-            >
+            <a key={l.href} href={l.href} className={`kicker hidden transition-colors duration-500 hover:opacity-70 md:inline ${textCls}`}>
               {l.label}
             </a>
           ))}
           <a
             href="#invitation"
-            className="kicker rounded-full border border-choc/40 px-5 py-2 text-choc transition-colors hover:bg-choc hover:text-paper"
+            className={`kicker rounded-full border px-5 py-2 transition-colors duration-300 ${
+              scrolled
+                ? 'border-sienna/50 text-sienna hover:bg-sienna hover:text-cream'
+                : 'border-cream/50 text-cream hover:bg-cream hover:text-espresso'
+            }`}
           >
             Pull Up a Chair
           </a>
