@@ -4,11 +4,11 @@ import { gsap, prefersReducedMotion } from '../lib/motion'
 import { useReady } from '../lib/ReadyContext'
 
 const SLIDES = [
-  { src: '/photos/hero-1.jpg', pos: 'center 42%' }, // grills close-up
-  { src: '/photos/hero-5.jpg', pos: 'center 32%' }, // seated, smiling, headroom
-  { src: '/photos/hero-2.jpg', pos: 'center 32%' }, // seated, serene
-  { src: '/photos/hero-3.jpg', pos: 'center 30%' }, // standing, both facing
-  { src: '/photos/hero-4.jpg', pos: 'center 30%' }, // seated, big smiles
+  { src: '/photos/hero-1.jpg', pos: 'center 42%' }, // grills close-up (wide → center)
+  { src: '/photos/hero-5.jpg', pos: '40% 32%' }, // seated, smiling, headroom
+  { src: '/photos/hero-2.jpg', pos: '40% 32%' }, // seated, serene
+  { src: '/photos/hero-3.jpg', pos: 'center 28%' }, // standing, both facing (wide → center)
+  { src: '/photos/hero-4.jpg', pos: '40% 30%' }, // seated, big smiles
 ]
 const INTERVAL = 5500
 
@@ -82,7 +82,7 @@ export default function Hero() {
         <p ref={kicker} className="kicker mb-6 text-sienna">A slow-living club · rooted in faith</p>
         <h1
           className="serif uppercase text-espresso"
-          style={{ fontSize: 'clamp(3.6rem, 13.5vw, 11.5rem)', lineHeight: 0.86, letterSpacing: '0.01em', textShadow: '0 2px 38px rgba(239,227,200,0.92), 0 0 2px rgba(239,227,200,0.6)' }}
+          style={{ fontSize: 'clamp(2.6rem, 9vw, 7rem)', lineHeight: 0.9, letterSpacing: '0.012em', textShadow: '0 2px 30px rgba(239,227,200,0.9), 0 0 2px rgba(239,227,200,0.55)' }}
         >
           <span className="block overflow-hidden"><span ref={l1} className="block">Anti-Rush</span></span>
           <span className="block overflow-hidden"><span ref={l2} className="block italic-serif" style={{ textTransform: 'none' }}>Club</span></span>
