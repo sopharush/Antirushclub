@@ -5,6 +5,7 @@ import { useReady } from '../lib/ReadyContext'
 
 const SLIDES = [
   { src: '/photos/hero-1.jpg', pos: 'center 42%' }, // grills close-up
+  { src: '/photos/hero-5.jpg', pos: 'center 46%' }, // seated, smiling, headroom
   { src: '/photos/hero-2.jpg', pos: 'center 32%' }, // seated, serene
   { src: '/photos/hero-3.jpg', pos: 'center 30%' }, // standing, both facing
   { src: '/photos/hero-4.jpg', pos: 'center 30%' }, // seated, big smiles
