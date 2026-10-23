@@ -39,13 +39,13 @@ export default function Hero() {
         style={{ background: 'linear-gradient(180deg, rgba(239,227,200,0.92) 0%, rgba(239,227,200,0.5) 42%, rgba(239,227,200,0) 100%)' }}
       />
 
-      <div className="relative z-10 px-6 pt-[16vh] text-center">
+      <div className="relative z-10 px-6 pt-[11vh] text-center">
         <p ref={kicker} className="kicker mb-6 text-sienna">
           A slow-living club · rooted in faith
         </p>
         <h1
           className="serif uppercase text-espresso"
-          style={{ fontSize: 'clamp(3rem, 11vw, 9rem)', lineHeight: 0.88, letterSpacing: '0.012em' }}
+          style={{ fontSize: 'clamp(3.6rem, 13.5vw, 11.5rem)', lineHeight: 0.86, letterSpacing: '0.01em' }}
         >
           <span className="block overflow-hidden"><span ref={l1} className="block">Anti-Rush</span></span>
           <span className="block overflow-hidden"><span ref={l2} className="block italic-serif" style={{ textTransform: 'none' }}>Club</span></span>
