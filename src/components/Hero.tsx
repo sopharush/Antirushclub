@@ -4,13 +4,11 @@ import { gsap, prefersReducedMotion } from '../lib/motion'
 import { useReady } from '../lib/ReadyContext'
 
 const SLIDES = [
-  { src: '/photos/hero-1.jpg', pos: 'center 42%' }, // grills close-up (wide → center)
+  { src: '/photos/hero-1.jpg', pos: 'center 42%' }, // grills close-up
   { src: '/photos/hero-5.jpg', pos: '40% 32%' }, // seated, smiling, headroom
   { src: '/photos/hero-6.jpg', pos: 'center 34%' }, // tender, leaning
   { src: '/photos/hero-7.jpg', pos: 'center 34%' }, // candid, laughing together
   { src: '/photos/hero-2.jpg', pos: '40% 32%' }, // seated, serene
-  { src: '/photos/hero-3.jpg', pos: 'center 28%' }, // standing, both facing (wide → center)
-  { src: '/photos/hero-4.jpg', pos: '40% 30%' }, // seated, big smiles
 ]
 const INTERVAL = 5500
 
