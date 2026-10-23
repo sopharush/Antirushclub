@@ -12,6 +12,7 @@ import Footer from './components/Footer'
 
 import Why from './sections/Why'
 import SeriesScroll from './sections/SeriesScroll'
+import JoyBand from './sections/JoyBand'
 import Pause from './sections/Pause'
 import Values from './sections/Values'
 import Experience from './sections/Experience'
@@ -43,6 +44,7 @@ export default function App() {
         <Hero />
         <Why />
         <SeriesScroll />
+        <JoyBand />
         <Values />
         <Pause />
         <Experience />
