@@ -32,7 +32,7 @@ export default function Hero() {
 
   return (
     <section id="top" className="relative flex min-h-screen flex-col items-center overflow-hidden">
-      <PhotoBG src="/photos/hero.jpg" overlay={0.12} position="center 32%" />
+      <PhotoBG src="/photos/hero.jpg" overlay={0.14} position="center 42%" />
       {/* warm scrim up top so the espresso wordmark always reads */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[62%]"
@@ -45,12 +45,12 @@ export default function Hero() {
         </p>
         <h1
           className="serif uppercase text-espresso"
-          style={{ fontSize: 'clamp(3.6rem, 13.5vw, 11.5rem)', lineHeight: 0.86, letterSpacing: '0.01em' }}
+          style={{ fontSize: 'clamp(3.6rem, 13.5vw, 11.5rem)', lineHeight: 0.86, letterSpacing: '0.01em', textShadow: '0 2px 38px rgba(239,227,200,0.92), 0 0 2px rgba(239,227,200,0.6)' }}
         >
           <span className="block overflow-hidden"><span ref={l1} className="block">Anti-Rush</span></span>
           <span className="block overflow-hidden"><span ref={l2} className="block italic-serif" style={{ textTransform: 'none' }}>Club</span></span>
         </h1>
-        <p ref={tag} className="italic-serif mx-auto mt-6 text-ink" style={{ fontSize: 'clamp(1.05rem, 2.1vw, 1.5rem)' }}>
+        <p ref={tag} className="italic-serif mx-auto mt-6 text-ink" style={{ fontSize: 'clamp(1.05rem, 2.1vw, 1.5rem)', textShadow: '0 1px 16px rgba(239,227,200,0.98), 0 0 3px rgba(239,227,200,0.9)' }}>
           Come as you are. Slow down. Stay awhile.
         </p>
         <div ref={cta} className="mt-8">
