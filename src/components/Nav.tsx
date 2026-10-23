@@ -16,7 +16,7 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const textCls = scrolled ? 'text-ink' : 'text-cream'
+  const textCls = 'text-ink'
 
   return (
     <header
@@ -36,11 +36,7 @@ export default function Nav() {
           ))}
           <a
             href="#invitation"
-            className={`kicker rounded-full border px-5 py-2 transition-colors duration-300 ${
-              scrolled
-                ? 'border-sienna/50 text-sienna hover:bg-sienna hover:text-cream'
-                : 'border-cream/50 text-cream hover:bg-cream hover:text-espresso'
-            }`}
+            className="kicker rounded-full border border-sienna/50 px-5 py-2 text-sienna transition-colors duration-300 hover:bg-sienna hover:text-cream"
           >
             Pull Up a Chair
           </a>

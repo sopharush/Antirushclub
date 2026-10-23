@@ -4,7 +4,7 @@ import PhotoBG from '../components/PhotoBG'
 export default function Invitation() {
   return (
     <section id="invitation" className="relative flex min-h-[90vh] items-center overflow-hidden py-36 md:py-52">
-      <PhotoBG tone="film" overlay={0.56} />
+      <PhotoBG src="/photos/closing.jpg" overlay={0.5} position="center 30%" />
       <div className="relative z-10 mx-auto max-w-[900px] px-6 text-center">
         <p className="kicker text-caramel" data-reveal style={{ color: '#e6bd84' }}>Your seat is waiting</p>
         <h2 className="serif mt-7 text-paper" style={{ fontSize: 'clamp(2.4rem, 6.2vw, 5.2rem)', lineHeight: 0.98, textShadow: '0 2px 40px rgba(24,14,7,0.5)' }}>

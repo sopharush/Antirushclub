@@ -14,9 +14,9 @@ export default function Experience() {
     <section id="experience" className="bg-cream2 py-28 md:py-40">
       <div className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-16 px-6 md:grid-cols-[0.9fr_1.1fr] md:px-10">
         <div className="relative order-2 md:order-1">
-          <Photo tone="e" label="around the table" className="vframe aspect-[4/5] w-full" />
+          <Photo src="/photos/exp-main.jpg" alt="Resting together" position="center 35%" className="vframe aspect-[4/5] w-full" />
           <div className="absolute -right-7 -top-9 hidden lg:block" data-parallax="90">
-            <Photo tone="c" label="what’s in your cup?" className="vframe h-44 w-32" />
+            <Photo src="/photos/exp-small.jpg" alt="Side by side" position="center 40%" className="vframe h-48 w-36" />
           </div>
         </div>
 

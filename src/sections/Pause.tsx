@@ -4,7 +4,7 @@ import PhotoBG from '../components/PhotoBG'
 export default function Pause() {
   return (
     <section className="relative flex min-h-[85vh] items-center overflow-hidden py-28 md:py-40">
-      <PhotoBG tone="dusk" overlay={0.58} />
+      <PhotoBG src="/photos/pause.jpg" overlay={0.6} position="center 35%" />
       <div className="relative z-10 mx-auto max-w-[920px] px-6 text-center">
         <p className="kicker text-caramel" data-reveal style={{ color: '#e6bd84' }}>Theme Scripture · Romans 12:2</p>
         <blockquote

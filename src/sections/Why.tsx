@@ -30,9 +30,9 @@ export default function Why() {
         </div>
 
         <div className="relative" data-reveal>
-          <Photo tone="d" label="present over pressure" className="vframe aspect-[4/5] w-full" />
+          <Photo src="/photos/why-main.jpg" alt="Anti-Rush Club — together" position="center 30%" className="vframe aspect-[4/5] w-full" />
           <div className="absolute -bottom-7 -left-7 hidden md:block" data-parallax="80">
-            <Photo tone="b" label="the table" className="vframe h-40 w-32" />
+            <Photo src="/photos/why-small.jpg" alt="A quiet moment" position="center 62%" className="vframe h-44 w-32" />
           </div>
         </div>
       </div>

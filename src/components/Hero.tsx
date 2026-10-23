@@ -1,9 +1,7 @@
-import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import PhotoBG from './PhotoBG'
 import { gsap, prefersReducedMotion } from '../lib/motion'
 import { useReady } from '../lib/ReadyContext'
-
-const HeroShader = lazy(() => import('./HeroShader'))
 
 export default function Hero() {
   const { ready } = useReady()
@@ -33,31 +31,32 @@ export default function Hero() {
   }, [ready, reduced])
 
   return (
-    <section id="top" className="relative flex min-h-screen items-center justify-center overflow-hidden">
-      <PhotoBG tone="dusk" overlay={0.52} />
-      <Suspense fallback={null}><HeroShader /></Suspense>
+    <section id="top" className="relative flex min-h-screen flex-col items-center overflow-hidden">
+      <PhotoBG src="/photos/hero.jpg" overlay={0.12} position="center 32%" />
+      {/* warm scrim up top so the espresso wordmark always reads */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[62%]"
+        style={{ background: 'linear-gradient(180deg, rgba(239,227,200,0.92) 0%, rgba(239,227,200,0.5) 42%, rgba(239,227,200,0) 100%)' }}
+      />
 
-      <div className="relative z-10 px-6 text-center">
-        <p ref={kicker} className="kicker mb-7 text-caramel" style={{ color: '#e6bd84' }}>
+      <div className="relative z-10 px-6 pt-[16vh] text-center">
+        <p ref={kicker} className="kicker mb-6 text-sienna">
           A slow-living club · rooted in faith
         </p>
-
         <h1
-          className="serif uppercase text-paper"
-          style={{ fontSize: 'clamp(3.2rem, 11.5vw, 9.5rem)', lineHeight: 0.88, letterSpacing: '0.012em', textShadow: '0 2px 40px rgba(24,14,7,0.5)' }}
+          className="serif uppercase text-espresso"
+          style={{ fontSize: 'clamp(3rem, 11vw, 9rem)', lineHeight: 0.88, letterSpacing: '0.012em' }}
         >
           <span className="block overflow-hidden"><span ref={l1} className="block">Anti-Rush</span></span>
           <span className="block overflow-hidden"><span ref={l2} className="block italic-serif" style={{ textTransform: 'none' }}>Club</span></span>
         </h1>
-
-        <p ref={tag} className="italic-serif mx-auto mt-7 text-cream" style={{ fontSize: 'clamp(1.05rem, 2.1vw, 1.55rem)' }}>
+        <p ref={tag} className="italic-serif mx-auto mt-6 text-ink" style={{ fontSize: 'clamp(1.05rem, 2.1vw, 1.5rem)' }}>
           Come as you are. Slow down. Stay awhile.
         </p>
-
-        <div ref={cta} className="mt-9">
+        <div ref={cta} className="mt-8">
           <a
             href="#invitation"
-            className="kicker inline-block rounded-full bg-cream px-8 py-4 text-espresso transition-transform hover:-translate-y-0.5"
+            className="kicker inline-block rounded-full bg-espresso px-8 py-4 text-cream transition-transform hover:-translate-y-0.5"
           >
             Pull Up a Chair
           </a>
@@ -65,8 +64,8 @@ export default function Hero() {
       </div>
 
       <div ref={cue} className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-3">
-        <span className="kicker text-[0.6rem] text-cream/80">Scroll</span>
-        <span className="block h-10 w-px bg-cream/40">
+        <span className="kicker text-[0.6rem] text-cream/90">Scroll</span>
+        <span className="block h-10 w-px bg-cream/50">
           <span className={`block h-3 w-px bg-cream ${reduced ? '' : 'animate-[cue_1.8s_ease-in-out_infinite]'}`} />
         </span>
       </div>
