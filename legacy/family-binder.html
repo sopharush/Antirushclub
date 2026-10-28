@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Family Binder — An Anti-Rush Club House Manager</title>
+<meta name="description" content="A calm, printable home for everything a household runs on — contacts, allergies, schedules, meals, memberships and more. So no one has to hold it all in their head." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   The Family Binder — Anti-Rush Club House Manager
+   Warm white ground · chocolate & black accents
+   Fillable on screen (auto-saves) · prints one sheet per page
+   ============================================================ */
+:root{
+  --paper:#faf7f2; --paper-2:#f2ebe0; --white:#ffffff;
+  --choc:#3a2318; --choc-2:#5c3d29; --black:#15110e;
+  --ink:#241a12; --ink-soft:#6a5544;
+  --cream:#f3ecdf; --cream-dim:#cbb9a1;
+  --line:#d9ccb8; --line-soft:#e7ddcc;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Jost","Century Gothic","Futura",system-ui,sans-serif;
+  --sheet-w:820px;
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--paper-2);color:var(--ink);
+  font-family:var(--sans);font-weight:300;line-height:1.7;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;letter-spacing:.01em;
+  font-optical-sizing:auto;font-variation-settings:"opsz" 144,"SOFT" 4,"WONK" 1;}
+a{color:var(--choc);}
+
+.label{font-family:var(--sans);font-weight:500;font-size:.66rem;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--choc-2);}
+
+/* ---------- layout: rail + reading area ---------- */
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh;}
+
+/* ---------- left rail (binder tabs) ---------- */
+.rail{
+  position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;
+  background:var(--choc);color:var(--cream);
+  padding:26px 0 30px;display:flex;flex-direction:column;
+}
+.rail__brand{display:flex;align-items:center;gap:9px;padding:0 22px 18px;}
+.rail__flower{width:20px;height:20px;color:var(--cream-dim);flex:none;}
+.rail__word{font-family:var(--serif);font-weight:600;font-size:1.02rem;letter-spacing:.06em;color:var(--cream);}
+.rail__tag{padding:0 22px 20px;font-family:var(--serif);font-style:italic;font-size:.82rem;color:var(--cream-dim);line-height:1.5;}
+.rail__nav{display:flex;flex-direction:column;padding:4px 0;border-top:1px solid rgba(243,236,223,.14);}
+.rail__link{
+  display:flex;gap:12px;align-items:baseline;text-decoration:none;color:var(--cream);
+  padding:8px 22px;font-size:.82rem;letter-spacing:.02em;opacity:.72;
+  transition:opacity .18s,background .18s;
+}
+.rail__link:hover{opacity:1;background:rgba(243,236,223,.06);}
+.rail__link.is-active{opacity:1;background:rgba(243,236,223,.1);box-shadow:inset 3px 0 0 var(--cream);}
+.rail__num{font-family:var(--serif);font-size:.74rem;color:var(--cream-dim);min-width:1.4em;}
+.rail__actions{margin-top:auto;padding:18px 22px 0;display:flex;flex-direction:column;gap:10px;}
+
+/* ---------- buttons ---------- */
+.btn{font-family:var(--sans);font-weight:500;font-size:.68rem;letter-spacing:.2em;
+  text-transform:uppercase;border-radius:40px;padding:12px 20px;cursor:pointer;
+  border:1px solid transparent;transition:transform .18s,background .18s,color .18s;text-align:center;text-decoration:none;}
+.btn:hover{transform:translateY(-1px);}
+.btn--cream{background:var(--cream);color:var(--choc);}
+.btn--cream:hover{background:var(--white);}
+.btn--ghost{background:transparent;color:var(--cream);border-color:rgba(243,236,223,.4);}
+.btn--ghost:hover{background:rgba(243,236,223,.1);}
+.btn--dark{background:var(--choc);color:var(--cream);}
+.btn--dark:hover{background:var(--choc-2);}
+
+/* ---------- reading area ---------- */
+.reader{padding:34px clamp(16px,4vw,64px) 90px;}
+.sheet{
+  background:var(--white);max-width:var(--sheet-w);margin:0 auto 34px;
+  border-radius:3px;box-shadow:0 14px 40px rgba(58,35,24,.1),0 2px 6px rgba(58,35,24,.06);
+  padding:clamp(30px,5vw,64px);position:relative;scroll-margin-top:24px;
+}
+
+/* ---------- cover ---------- */
+.cover{
+  text-align:center;
+  background:radial-gradient(78% 66% at 50% 40%,#ffffff 0%,#f7f1e7 62%,#efe4d4 100%);
+  padding:clamp(48px,7vw,96px) clamp(30px,5vw,64px);
+  border:1px solid var(--line-soft);
+}
+.cover__eyebrow{font-family:var(--sans);font-weight:500;font-size:.7rem;
+  letter-spacing:.42em;text-transform:uppercase;color:var(--choc-2);margin:0 0 26px;}
+.cover__title{color:var(--choc);text-transform:uppercase;line-height:.92;
+  font-size:clamp(2.6rem,7vw,5rem);text-wrap:balance;letter-spacing:.01em;}
+.cover__title em{font-style:italic;text-transform:none;font-weight:400;display:block;
+  font-size:.42em;letter-spacing:.02em;color:var(--choc-2);margin-top:.5em;}
+.cover__flower{width:52px;height:52px;color:var(--choc-2);margin:0 auto 22px;display:block;}
+.cover__sub{font-family:var(--serif);font-style:italic;color:var(--ink);
+  font-size:clamp(1rem,2vw,1.28rem);margin:26px auto 0;max-width:44ch;line-height:1.55;}
+.cover__rule{width:56px;height:1px;background:var(--choc-2);opacity:.6;margin:32px auto;}
+.cover__belongs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 26px;
+  max-width:560px;margin:0 auto;text-align:left;}
+.cover__belongs .field{flex:1 1 200px;}
+
+/* ---------- section headers ---------- */
+.sheet__head{display:flex;align-items:flex-start;gap:16px;margin:0 0 26px;
+  padding-bottom:18px;border-bottom:2px solid var(--choc);}
+.sheet__num{font-family:var(--serif);font-size:2.4rem;line-height:.8;color:var(--line);flex:none;}
+.sheet__titles h2{color:var(--choc);text-transform:uppercase;font-size:clamp(1.4rem,3vw,2rem);line-height:1;}
+.sheet__titles p{margin:8px 0 0;color:var(--ink-soft);font-size:.86rem;line-height:1.5;}
+
+.block{margin:0 0 30px;}
+.block:last-child{margin-bottom:0;}
+.block__title{font-family:var(--serif);font-weight:500;color:var(--choc);
+  font-size:1.12rem;margin:0 0 14px;display:flex;align-items:center;gap:10px;}
+.block__title::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--choc-2);flex:none;}
+.block__note{font-size:.8rem;color:var(--ink-soft);margin:-6px 0 14px;font-style:italic;}
+
+/* ---------- fillable fields ---------- */
+.grid{display:grid;gap:16px 22px;}
+.g2{grid-template-columns:1fr 1fr;}
+.g3{grid-template-columns:1fr 1fr 1fr;}
+.field{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.field > label{font-family:var(--sans);font-weight:500;font-size:.62rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);}
+.fill{
+  font-family:var(--sans);font-weight:300;font-size:.92rem;color:var(--ink);
+  border:none;border-bottom:1.5px solid var(--line);background:transparent;
+  padding:4px 2px 5px;min-height:1.9em;line-height:1.55;outline:none;
+  transition:border-color .18s,background .18s;border-radius:2px;
+}
+.fill:focus{border-bottom-color:var(--choc-2);background:#fffdf9;}
+.fill:empty::before{content:attr(data-ph);color:#c3b49d;font-style:italic;}
+.fill--area{border:1.5px solid var(--line);border-radius:4px;min-height:5.4em;
+  padding:9px 11px;white-space:pre-wrap;word-break:break-word;}
+.fill--area:focus{border-color:var(--choc-2);}
+.fill--lg{font-size:1rem;}
+
+/* ---------- checklists ---------- */
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:9px;}
+.checks.cols2{grid-template-columns:1fr 1fr;gap:9px 24px;}
+.check{display:flex;align-items:flex-start;gap:10px;font-size:.9rem;color:var(--ink);}
+.check input{appearance:none;-webkit-appearance:none;width:17px;height:17px;flex:none;
+  margin-top:2px;border:1.5px solid var(--choc-2);border-radius:4px;background:var(--white);
+  cursor:pointer;position:relative;transition:background .15s;}
+.check input:checked{background:var(--choc);}
+.check input:checked::after{content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;
+  border:solid var(--cream);border-width:0 2px 2px 0;transform:rotate(45deg);}
+.check span[contenteditable]{flex:1;border-bottom:1px dotted var(--line-soft);outline:none;padding-bottom:1px;}
+.check span[contenteditable]:focus{border-bottom-color:var(--choc-2);}
+.check span:empty::before{content:attr(data-ph);color:#c3b49d;font-style:italic;}
+
+/* ---------- tables ---------- */
+.tbl-wrap{overflow-x:auto;}
+table.grid-tbl{width:100%;border-collapse:collapse;font-size:.86rem;min-width:520px;}
+.grid-tbl th{font-family:var(--sans);font-weight:500;font-size:.6rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:0 8px 8px;border-bottom:2px solid var(--choc-2);}
+.grid-tbl td{padding:0;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+.grid-tbl td .fill{border-bottom:none;border-radius:0;min-height:2.4em;padding:7px 8px;}
+.grid-tbl td .fill:focus{background:#fffdf9;}
+.grid-tbl tr:last-child td{border-bottom:none;}
+.grid-tbl td.rowhead{font-family:var(--sans);font-weight:500;font-size:.64rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--choc-2);padding:10px 10px 10px 2px;white-space:nowrap;width:1%;}
+
+/* meal plan / week grid */
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:6px;overflow:hidden;}
+.week .day{background:var(--white);padding:10px 8px;min-height:130px;display:flex;flex-direction:column;gap:6px;}
+.week .day h4{font-family:var(--sans);font-weight:600;font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--choc-2);margin:0;}
+.week .day .fill--area{min-height:3.4em;font-size:.8rem;border-color:var(--line-soft);flex:1;}
+
+/* callout for the "go look in the book" idea */
+.callout{background:var(--paper-2);border-left:3px solid var(--choc);border-radius:4px;
+  padding:16px 20px;font-family:var(--serif);font-style:italic;color:var(--ink);font-size:.95rem;line-height:1.55;}
+.callout strong{font-style:normal;font-family:var(--sans);font-weight:600;font-size:.78rem;
+  letter-spacing:.06em;color:var(--choc);display:block;margin-bottom:4px;text-transform:none;}
+
+.security-note{font-size:.78rem;color:var(--ink-soft);background:#fbf6ec;border:1px dashed var(--line);
+  border-radius:6px;padding:12px 16px;margin:0 0 20px;line-height:1.55;}
+.security-note b{color:var(--choc);}
+
+.save-status{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim);text-align:center;padding-top:6px;}
+
+.footer-note{max-width:var(--sheet-w);margin:0 auto;text-align:center;color:var(--ink-soft);
+  font-size:.78rem;padding:10px 0 0;line-height:1.6;}
+.footer-note .foot__motto{font-family:var(--serif);font-style:italic;color:var(--choc-2);display:block;font-size:.95rem;margin-bottom:4px;}
+
+/* skip repetitive add-row helper */
+.hint{font-size:.72rem;color:var(--ink-soft);font-style:italic;margin-top:8px;}
+
+/* ============================================================
+   THEME — this product commits to its warm paper world in both
+   OS themes (a binder is paper); we keep it legible & consistent.
+   ============================================================ */
+@media (prefers-color-scheme:dark){
+  body{background:#2a2018;}
+}
+:root[data-theme="dark"] body{background:#2a2018;}
+:root[data-theme="light"] body{background:var(--paper-2);}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:820px){
+  .app{grid-template-columns:1fr;}
+  .rail{position:static;height:auto;flex-direction:column;}
+  .rail__nav{max-height:none;}
+  .g2,.g3{grid-template-columns:1fr;}
+  .checks.cols2{grid-template-columns:1fr;}
+  .week{grid-template-columns:1fr 1fr;}
+  .reader{padding:22px 14px 70px;}
+}
+
+/* ============================================================
+   PRINT — one sheet per page, no rail, clean fill lines
+   ============================================================ */
+@media print{
+  @page{margin:14mm;}
+  body{background:#fff;}
+  .app{display:block;}
+  .rail,.no-print{display:none !important;}
+  .reader{padding:0;}
+  .sheet{box-shadow:none;border:none;max-width:none;width:100%;margin:0;padding:0 0 8mm;
+    break-after:page;page-break-after:always;}
+  .sheet:last-child{break-after:auto;page-break-after:auto;}
+  .cover{border:none;min-height:auto;}
+  .fill:focus,.fill--area:focus{background:transparent;}
+  .fill:empty::before,.check span:empty::before{content:"";}
+  .fill{border-bottom-color:#bbb;}
+  .fill--area,.grid-tbl,.week{border-color:#ccc;}
+  a{color:inherit;text-decoration:none;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ LEFT RAIL / BINDER TABS ============ -->
+  <aside class="rail no-print">
+    <div class="rail__brand">
+      <svg class="rail__flower" viewBox="0 0 40 40" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="20" cy="20" r="3.4"/>
+          <path d="M20 16.6c0-4 1.6-6.8 0-10 -1.6 3.2 0 6 0 10z"/>
+          <path d="M23.4 20c4 0 6.8 1.6 10 0 -3.2-1.6-6 0-10 0z"/>
+          <path d="M20 23.4c0 4 1.6 6.8 0 10 -1.6-3.2 0-6 0-10z"/>
+          <path d="M16.6 20c-4 0-6.8 1.6-10 0 3.2-1.6 6 0 10 0z"/>
+        </g>
+      </svg>
+      <span class="rail__word">The Family Binder</span>
+    </div>
+    <p class="rail__tag">Everything the house runs on — in one calm place.</p>
+    <nav class="rail__nav" id="rail-nav" aria-label="Binder sections"></nav>
+    <div class="rail__actions">
+      <button class="btn btn--cream" id="btn-print">Print the binder</button>
+      <button class="btn btn--ghost" id="btn-clear">Clear all entries</button>
+      <p class="save-status" id="save-status">Saves automatically in this browser</p>
+    </div>
+  </aside>
+
+  <!-- ============ READER ============ -->
+  <main class="reader" id="reader">
+
+    <!-- COVER -->
+    <section class="sheet cover" id="cover" data-tab="Cover">
+      <svg class="cover__flower" viewBox="0 0 40 40" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="20" cy="20" r="3.4"/>
+          <path d="M20 16.6c0-4 1.6-6.8 0-10 -1.6 3.2 0 6 0 10z"/>
+          <path d="M23.4 20c4 0 6.8 1.6 10 0 -3.2-1.6-6 0-10 0z"/>
+          <path d="M20 23.4c0 4 1.6 6.8 0 10 -1.6-3.2 0-6 0-10z"/>
+          <path d="M16.6 20c-4 0-6.8 1.6-10 0 3.2-1.6 6 0 10 0z"/>
+        </g>
+      </svg>
+      <p class="cover__eyebrow">An Anti-Rush Club House Manager</p>
+      <h1 class="cover__title">The Family<br>Binder<em>so no one has to hold it all in their head</em></h1>
+      <p class="cover__sub">A calm home for every little decision — contacts, allergies, schedules, meals and more. When someone asks, the answer is simply: <em>go look in the book.</em></p>
+      <div class="cover__rule"></div>
+      <div class="cover__belongs">
+        <div class="field"><label>This binder belongs to</label><div class="fill fill--lg" contenteditable="true" data-key="cover.family" data-ph="The ______ family"></div></div>
+        <div class="field"><label>Started</label><div class="fill fill--lg" contenteditable="true" data-key="cover.started" data-ph="Month / Year"></div></div>
+      </div>
+    </section>
+
+    <!-- TABLE OF CONTENTS -->
+    <section class="sheet" id="contents" data-tab="Contents">
+      <div class="sheet__head">
+        <div class="sheet__num">✦</div>
+        <div class="sheet__titles"><h2>What's Inside</h2><p>Flip to any tab from the sidebar, or print the whole binder and keep it on the counter.</p></div>
+      </div>
+      <ol class="checks" id="toc-list" style="counter-reset:toc;"></ol>
+      <p class="hint">Tip: fill it in on screen — your answers save automatically in this browser — then print anytime. Or print it blank and write by hand.</p>
+    </section>
+
+    <!-- Sections are injected here by JS from the DATA below -->
+    <div id="sections"></div>
+
+    <p class="footer-note no-print">
+      <span class="foot__motto">Come as you are. Slow down. Stay awhile.</span>
+      The Family Binder · An Anti-Rush Club House Manager
+    </p>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   Content model — each section renders to a printable sheet.
+   Field types:
+     line   {k,label,ph}                 → single fill line
+     area   {k,label,ph}                 → multi-line box
+     row    [fields...] inside grid cols
+   Blocks: {title, note, grid:2|3, fields:[]}
+           {title, checks:['a','b'], cols:2, note}  (labeled checklist)
+           {title, table:{cols:[], rows:[{head, keys:[]}] or count}}
+           {week:true}  → 7-day meal grid
+           {callout:{title, text}}
+           {html:'...'} → raw block (used sparingly)
+   ============================================================ */
+const SECTIONS = [
+ {
+  id:"household", tab:"Household", title:"Household at a Glance",
+  sub:"The basics a guest, sitter, or new helper would need in the first five minutes.",
+  blocks:[
+   {title:"Home", grid:2, fields:[
+     {t:"line",k:"hh.address",label:"Home address",ph:"Street, city, zip"},
+     {t:"line",k:"hh.since",label:"What3words / cross streets",ph:"How to describe finding us"},
+     {t:"line",k:"hh.wifi",label:"Wi-Fi network",ph:"Network name"},
+     {t:"line",k:"hh.wifipw",label:"Wi-Fi password",ph:"Password"},
+     {t:"line",k:"hh.alarm",label:"Alarm / entry code",ph:"How to arm & disarm"},
+     {t:"line",k:"hh.spare",label:"Spare key location",ph:"Where a spare lives"},
+   ]},
+   {title:"Utilities & services", grid:2, fields:[
+     {t:"line",k:"hh.electric",label:"Electric",ph:"Company + account #"},
+     {t:"line",k:"hh.gaswater",label:"Gas / water",ph:"Company + account #"},
+     {t:"line",k:"hh.internet",label:"Internet / cable",ph:"Provider + account #"},
+     {t:"line",k:"hh.trash",label:"Trash & recycling day",ph:"e.g. Tues trash, Fri recycle"},
+     {t:"line",k:"hh.shutoff",label:"Water / gas shut-off",ph:"Where the valves are"},
+     {t:"line",k:"hh.breaker",label:"Breaker box",ph:"Location"},
+   ]},
+   {title:"Vehicles", table:{cols:["Vehicle","Plate","Insurance + policy #","Notes (oil, registration due)"], rows:2, key:"hh.veh"}},
+  ]
+ },
+ {
+  id:"emergency", tab:"Emergency", title:"Emergency Contacts",
+  sub:"The page you hope you never need. Post a copy on the fridge.",
+  blocks:[
+   {callout:{title:"In an emergency", text:"Call 911 first. Then start at the top of this list. Our home address is on the “Household” tab."}},
+   {title:"First calls", table:{cols:["Who","Relationship","Phone","Notes"], rows:5, key:"em.calls",
+     seed:[["","Parent / guardian",""," "],["","Parent / guardian",""," "],["","Neighbor",""," "],["","Nearby family",""," "]]}},
+   {title:"Medical & safety", grid:2, fields:[
+     {t:"line",k:"em.poison",label:"Poison control",ph:"1-800-222-1222 (US)"},
+     {t:"line",k:"em.nurse",label:"Nurse / after-hours line",ph:"Pediatric advice line"},
+     {t:"line",k:"em.hospital",label:"Preferred hospital / ER",ph:"Name + address"},
+     {t:"line",k:"em.urgent",label:"Nearest urgent care",ph:"Name + hours"},
+     {t:"line",k:"em.pharmacy",label:"Pharmacy",ph:"Name + phone"},
+     {t:"line",k:"em.vet",label:"Vet / emergency vet",ph:"If you have pets"},
+   ]},
+   {title:"Home & help", grid:2, fields:[
+     {t:"line",k:"em.plumber",label:"Plumber",ph:"Name + phone"},
+     {t:"line",k:"em.electric",label:"Electrician",ph:"Name + phone"},
+     {t:"line",k:"em.hvac",label:"HVAC / heating",ph:"Name + phone"},
+     {t:"line",k:"em.roadside",label:"Roadside assistance",ph:"Provider + member #"},
+   ]},
+  ]
+ },
+ {
+  id:"kids", tab:"The Kids", title:"The Kids — At a Glance",
+  sub:"One profile per child. Copy this tab as many times as you have kiddos.",
+  blocks:[
+   {title:"Child profile", grid:2, fields:[
+     {t:"line",k:"kid1.name",label:"Name",ph:"Full name + nickname"},
+     {t:"line",k:"kid1.dob",label:"Birthday",ph:"Date + age"},
+     {t:"line",k:"kid1.blood",label:"Blood type",ph:"If known"},
+     {t:"line",k:"kid1.ssn",label:"ID / records #",ph:"Where the birth certificate lives"},
+   ]},
+   {title:"Allergies & medical",note:"The first thing any sitter or new caregiver should read.", grid:1, fields:[
+     {t:"area",k:"kid1.allergy",label:"Allergies & reactions",ph:"Food, meds, environmental — and what to do (e.g. EpiPen in the front pocket of the green bag)"},
+     {t:"area",k:"kid1.meds",label:"Medications & doses",ph:"Daily meds, vitamins, as-needed meds and when to give them"},
+     {t:"line",k:"kid1.condition",label:"Conditions / needs",ph:"Asthma, sensory, dietary, etc."},
+   ]},
+   {title:"Care team", grid:2, fields:[
+     {t:"line",k:"kid1.ped",label:"Pediatrician",ph:"Name + phone"},
+     {t:"line",k:"kid1.dentist",label:"Dentist",ph:"Name + phone"},
+     {t:"line",k:"kid1.insurance",label:"Insurance + member ID",ph:"Plan + ID number"},
+     {t:"line",k:"kid1.other",label:"Therapist / specialist",ph:"If any"},
+   ]},
+   {title:"Good to know", grid:2, fields:[
+     {t:"line",k:"kid1.school",label:"School / daycare",ph:"Name + phone"},
+     {t:"line",k:"kid1.teacher",label:"Teacher / room",ph:"Name"},
+     {t:"line",k:"kid1.sizes",label:"Clothing & shoe sizes",ph:"Current sizes"},
+     {t:"line",k:"kid1.comfort",label:"Comfort & calming",ph:"Lovey, what soothes a hard moment"},
+     {t:"line",k:"kid1.foods",label:"Loves / won't eat",ph:"Safe foods & hard nos"},
+     {t:"line",k:"kid1.friends",label:"Best friends / carpool",ph:"Names + parent phones"},
+   ]},
+  ]
+ },
+ {
+  id:"routines", tab:"Rhythms", title:"Daily Rhythms & Routines",
+  sub:"The gentle order of a day — so the house can run even when you're not the one running it.",
+  blocks:[
+   {title:"Morning", grid:1, fields:[{t:"area",k:"rt.am",label:"How mornings go",ph:"Wake times, breakfast, out-the-door checklist, who leaves when"}]},
+   {title:"After school / afternoon", grid:1, fields:[{t:"area",k:"rt.pm",label:"How afternoons go",ph:"Snacks, homework, screen rules, activities"}]},
+   {title:"Bedtime", grid:1, fields:[{t:"area",k:"rt.night",label:"How bedtime goes",ph:"Bath, teeth, stories, lights-out times per child"}]},
+   {title:"House rhythms", checks:[
+     "Beds made & rooms tidy","Dishwasher run / emptied","Laundry: wash → dry → fold",
+     "Kitchen counters wiped","Backpacks & bags reset for tomorrow","Quiet / wind-down time"],
+     cols:2, key:"rt.checks",
+     note:"The little resets that keep the week from piling up."},
+  ]
+ },
+ {
+  id:"schedule", tab:"The Week", title:"The Weekly Schedule",
+  sub:"Who's where, and who's driving — the whole family's week on one page.",
+  blocks:[
+   {title:"Activities & commitments", table:{cols:["Day","Who","What / where","Time","Who's driving"], rows:8, key:"sch.act"}},
+   {title:"Standing to-dos", checks:[
+     "Trash & recycling out","Grocery run / delivery","Meal prep","Church / faith rhythm",
+     "Family day / rest","Weekly reset & tidy"], cols:2, key:"sch.todo"},
+  ]
+ },
+ {
+  id:"sitter", tab:"For Sitters", title:"The Babysitter & Caregiver Guide",
+  sub:"Hand this tab to anyone caring for the kids. Everything they'll ask is here.",
+  blocks:[
+   {callout:{title:"Welcome — and thank you", text:"If a question comes up, the answer is almost certainly in this binder. Start with the Emergency tab and the Kids tab. Here's what makes our house tick."}},
+   {title:"Reach us", grid:2, fields:[
+     {t:"line",k:"sit.mom",label:"Parent 1",ph:"Name + cell"},
+     {t:"line",k:"sit.dad",label:"Parent 2",ph:"Name + cell"},
+     {t:"line",k:"sit.where",label:"Where we'll be",ph:"Tonight's plan"},
+     {t:"line",k:"sit.home",label:"Expected home by",ph:"Time"},
+     {t:"line",k:"sit.backup",label:"Backup adult",ph:"Name + phone if we can't be reached"},
+     {t:"line",k:"sit.neighbor",label:"Trusted neighbor",ph:"Name + phone"},
+   ]},
+   {title:"House rules & the little things", grid:1, fields:[
+     {t:"area",k:"sit.rules",label:"What's okay & what's not",ph:"Screen time limits, snacks that are fine, off-limits rooms, who can come to the door, pets"},
+     {t:"area",k:"sit.food",label:"Meals & snacks",ph:"What to feed them and when — and allergies to double-check on the Kids tab"},
+     {t:"area",k:"sit.bed",label:"Bedtime steps",ph:"Order of operations, comfort items, nightlights, what to do if they wake"},
+     {t:"area",k:"sit.emerg",label:"If something goes wrong",ph:"Where the first-aid kit is, what counts as call-us-now vs. handle-it, nearest ER"},
+   ]},
+  ]
+ },
+ {
+  id:"meals", tab:"Meals", title:"Meal Planning",
+  sub:"Decide once, eat all week. No more 5pm “what's for dinner?”",
+  blocks:[
+   {title:"This week's dinners", week:true, key:"ml.week"},
+   {title:"Our go-to meals",note:"The reliable rotation — when you can't think, pick from here.", checks:[
+     "","","","","","","","","","",""], cols:2, key:"ml.goto"},
+   {title:"Takeout & delivery we love", table:{cols:["Place","What we order","Phone / app","Notes"], rows:4, key:"ml.takeout"}},
+  ]
+ },
+ {
+  id:"pantry", tab:"Pantry", title:"Pantry & Grocery",
+  sub:"What we always keep, and what we're out of — so the list writes itself.",
+  blocks:[
+   {title:"Staples we always keep",note:"Check what's running low; it goes on the list.", checks:[
+     "Milk","Eggs","Bread","Butter","Coffee / tea","Cooking oil","Flour","Sugar",
+     "Pasta / rice","Canned tomatoes","Beans","Cereal / oats","Peanut butter","Snacks",
+     "Fresh fruit","Fresh veg","Frozen veg","Cheese","Yogurt","Chicken / meat"], cols:2, key:"pn.staples"},
+   {title:"Running grocery list", grid:1, fields:[{t:"area",k:"pn.list",label:"Add as you run out",ph:"Jot items here — clear it after the shop"}]},
+   {title:"Household & paper goods", checks:[
+     "Paper towels","Toilet paper","Dish soap","Dishwasher pods","Laundry detergent","Trash bags",
+     "Hand soap","Cleaning spray","Sponges","Foil / wrap","Batteries","Light bulbs"], cols:2, key:"pn.house"},
+  ]
+ },
+ {
+  id:"cleaning", tab:"Cleaning", title:"The Cleaning Rhythm",
+  sub:"A little every day beats a big scramble. Nothing has to be perfect.",
+  blocks:[
+   {title:"Daily", checks:[
+     "Make beds","Wipe kitchen counters","Run / empty dishwasher","One load of laundry",
+     "Quick tidy of common areas","Sweep high-traffic floors"], cols:2, key:"cl.daily"},
+   {title:"Weekly", checks:[
+     "Bathrooms","Vacuum & mop","Dust surfaces","Change towels","Wash bedding",
+     "Fridge clean-out","Take out all trash","Wipe mirrors & glass"], cols:2, key:"cl.weekly"},
+   {title:"Monthly", checks:[
+     "Wipe baseboards","Clean microwave & oven","Dust ceiling fans / vents","Vacuum under furniture",
+     "Wipe cabinet fronts","Declutter one drawer/shelf","Wash trash cans"], cols:2, key:"cl.monthly"},
+   {title:"Seasonal / quarterly", checks:[
+     "Deep clean fridge & freezer","Wash windows","Flip / rotate mattresses","Swap seasonal clothes",
+     "Replace HVAC filters","Test smoke & CO detectors","Clean out car"], cols:2, key:"cl.seasonal"},
+  ]
+ },
+ {
+  id:"home", tab:"Home Care", title:"Home Maintenance & Providers",
+  sub:"The people you call and the tasks that are easy to forget.",
+  blocks:[
+   {title:"Service providers", table:{cols:["Service","Company","Phone","Account / notes"], rows:6, key:"hm.prov",
+     seed:[["Plumber","","",""],["Electrician","","",""],["HVAC","","",""],["Lawn / yard","","",""],["Pest control","","",""],["Handyman","","",""]]}},
+   {title:"Recurring maintenance", table:{cols:["Task","How often","Last done","Next due"], rows:6, key:"hm.maint",
+     seed:[["HVAC filter",""," ",""],["Smoke detector batteries","","",""],["Gutters","","",""],["Water filter","","",""],["Furnace / AC service","","",""]]}},
+   {title:"Good to note", grid:2, fields:[
+     {t:"line",k:"hm.paint",label:"Paint colors",ph:"Room → color name & code"},
+     {t:"line",k:"hm.filters",label:"Filter sizes",ph:"HVAC, fridge, etc."},
+   ]},
+  ]
+ },
+ {
+  id:"memberships", tab:"Memberships", title:"Memberships, Subscriptions & IDs",
+  sub:"Every card, login, and member number — so no one's digging through a wallet at the door.",
+  blocks:[
+   {title:"Museums, zoos & attractions",note:"The tab you asked for — member IDs ready when you walk up.", table:{cols:["Place","Member ID #","Expires","Perks / # of guests"], rows:5, key:"mb.museum"}},
+   {title:"Health & fitness", table:{cols:["Membership","Member ID #","Phone / app","Notes"], rows:3, key:"mb.fit"}},
+   {title:"Insurance & accounts", table:{cols:["Type","Provider","Policy / member #","Contact"], rows:5, key:"mb.ins",
+     seed:[["Health","","",""],["Dental","","",""],["Vision","","",""],["Auto","","",""],["Home / renters","","",""]]}},
+   {title:"Subscriptions & streaming", table:{cols:["Service","Plan","Renews / cost","Notes"], rows:5, key:"mb.subs"}},
+  ]
+ },
+ {
+  id:"dates", tab:"Dates", title:"Important Dates & Appointments",
+  sub:"Birthdays, anniversaries, checkups — the dates the whole family runs on.",
+  blocks:[
+   {title:"Birthdays & anniversaries", table:{cols:["Who","Date","Notes / gift ideas"], rows:8, key:"dt.bday"}},
+   {title:"Upcoming appointments", table:{cols:["Who","What","Date & time","Where / notes"], rows:8, key:"dt.appt"}},
+  ]
+ },
+ {
+  id:"money", tab:"Bills", title:"Bills & Budget",
+  sub:"A simple picture of what's due and when — no spreadsheet required.",
+  blocks:[
+   {"security-note":true},
+   {title:"Monthly bills", table:{cols:["Bill","Amount","Due date","Auto-pay?","Account"], rows:10, key:"mn.bills",
+     seed:[["Mortgage / rent","","","",""],["Electric","","","",""],["Gas / water","","","",""],["Internet","","","",""],["Phone","","","",""],["Car payment","","","",""],["Insurance","","","",""]]}},
+   {title:"Notes", grid:1, fields:[{t:"area",k:"mn.notes",label:"Savings goals & reminders",ph:"Sinking funds, big upcoming expenses, who pays what"}]},
+  ]
+ },
+ {
+  id:"logins", tab:"Logins", title:"Accounts & Logins",
+  sub:"A trusted place for the everyday accounts a caregiver or partner might need.",
+  blocks:[
+   {"security-note":"login"},
+   {title:"Everyday accounts", table:{cols:["Account","Username / email","Hint (not the password)","Notes"], rows:8, key:"lg.acct"}},
+  ]
+ },
+ {
+  id:"notes", tab:"Notes", title:"Notes & Brain Dump",
+  sub:"For everything that doesn't fit anywhere else. Empty the head; the binder holds it.",
+  blocks:[
+   {title:"", grid:1, fields:[
+     {t:"area",k:"nt.1",label:"",ph:"Write it all here…"},
+     {t:"area",k:"nt.2",label:"",ph:""},
+   ]},
+  ]
+ },
+];
+
+/* ---------------- rendering ---------------- */
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function fieldHtml(f){
+  if(f.t==="area"){
+    return `<div class="field">${f.label?`<label>${esc(f.label)}</label>`:""}
+      <div class="fill fill--area" contenteditable="true" data-key="${f.k}" data-ph="${esc(f.ph||"")}"></div></div>`;
+  }
+  return `<div class="field">${f.label?`<label>${esc(f.label)}</label>`:""}
+    <div class="fill" contenteditable="true" data-key="${f.k}" data-ph="${esc(f.ph||"")}"></div></div>`;
+}
+
+function tableHtml(t){
+  const cols = t.cols;
+  const rows = [];
+  for(let r=0;r<t.rows;r++){
+    let tds="";
+    for(let c=0;c<cols.length;c++){
+      const seed = (t.seed && t.seed[r] && t.seed[r][c]) ? t.seed[r][c] : "";
+      const key = `${t.key}.${r}.${c}`;
+      if(seed && c===0){
+        tds += `<td class="rowhead">${esc(seed)}</td>`;
+      }else{
+        tds += `<td><div class="fill" contenteditable="true" data-key="${key}" data-ph="${esc(seed&&c!==0?seed:"")}"></div></td>`;
+      }
+    }
+    rows.push(`<tr>${tds}</tr>`);
+  }
+  return `<div class="tbl-wrap"><table class="grid-tbl"><thead><tr>${
+    cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`;
+}
+
+function checksHtml(b){
+  const items = b.checks.map((label,i)=>{
+    const ckey=`${b.key}.c.${i}`, tkey=`${b.key}.t.${i}`;
+    return `<li class="check">
+      <input type="checkbox" data-key="${ckey}" aria-label="${esc(label||'item')}">
+      <span contenteditable="true" data-key="${tkey}" data-ph="${label?'':'Add your own…'}">${label?esc(label):""}</span></li>`;
+  }).join("");
+  return `<ul class="checks ${b.cols===2?'cols2':''}">${items}</ul>`;
+}
+
+function weekHtml(b){
+  const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  return `<div class="week">${days.map((d,i)=>`
+    <div class="day"><h4>${d}</h4>
+      <div class="fill fill--area" contenteditable="true" data-key="${b.key}.${i}" data-ph=""></div></div>`).join("")}</div>`;
+}
+
+function securityHtml(kind){
+  if(kind==="login"){
+    return `<p class="security-note"><b>A gentle note on safety:</b> this binder saves to <i>this browser only</i> and is never uploaded anywhere. Still — for anything printed and left out, store password <i>hints</i> here rather than full passwords, and keep the printed copy somewhere private. A dedicated password manager is best for the sensitive ones.</p>`;
+  }
+  return `<p class="security-note"><b>Keep this tab private.</b> It holds money details — fill it in for your own use, and store any printed copy somewhere safe.</p>`;
+}
+
+function blockHtml(b){
+  let inner="";
+  if(b.callout){ return `<div class="block"><div class="callout"><strong>${esc(b.callout.title)}</strong>${esc(b.callout.text)}</div></div>`; }
+  if(b["security-note"]){ return `<div class="block">${securityHtml(b["security-note"])}</div>`; }
+  if(b.week){ inner = weekHtml(b); }
+  else if(b.table){ inner = tableHtml(b.table); }
+  else if(b.checks){ inner = checksHtml(b); }
+  else if(b.fields){
+    const cls = b.grid===3?"grid g3":b.grid===2?"grid g2":"grid";
+    inner = `<div class="${cls}">${b.fields.map(fieldHtml).join("")}</div>`;
+  }
+  return `<div class="block">
+    ${b.title?`<h3 class="block__title">${esc(b.title)}</h3>`:""}
+    ${b.note?`<p class="block__note">${esc(b.note)}</p>`:""}
+    ${inner}</div>`;
+}
+
+function sectionHtml(s,idx){
+  return `<section class="sheet" id="${s.id}" data-tab="${esc(s.tab)}">
+    <div class="sheet__head">
+      <div class="sheet__num">${String(idx+1).padStart(2,"0")}</div>
+      <div class="sheet__titles"><h2>${esc(s.title)}</h2><p>${esc(s.sub)}</p></div>
+    </div>
+    ${s.blocks.map(blockHtml).join("")}
+  </section>`;
+}
+
+/* build nav + sections */
+const railNav=document.getElementById("rail-nav");
+const tocList=document.getElementById("toc-list");
+const sectionsWrap=document.getElementById("sections");
+
+const staticTabs=[{id:"cover",tab:"Cover"},{id:"contents",tab:"Contents"}];
+staticTabs.forEach((t,i)=>{
+  railNav.insertAdjacentHTML("beforeend",
+   `<a class="rail__link" href="#${t.id}"><span class="rail__num">${i===0?"·":"·"}</span>${t.tab}</a>`);
+});
+SECTIONS.forEach((s,i)=>{
+  railNav.insertAdjacentHTML("beforeend",
+   `<a class="rail__link" href="#${s.id}"><span class="rail__num">${String(i+1).padStart(2,"0")}</span>${s.tab}</a>`);
+  tocList.insertAdjacentHTML("beforeend",
+   `<li class="check"><span style="font-family:var(--serif);color:var(--choc-2);min-width:2em;">${String(i+1).padStart(2,"0")}</span>
+     <a href="#${s.id}" style="text-decoration:none;color:var(--ink);"><b style="font-weight:500;">${esc(s.title)}</b> — <span style="color:var(--ink-soft);">${esc(s.sub)}</span></a></li>`);
+  sectionsWrap.insertAdjacentHTML("beforeend", sectionHtml(s,i));
+});
+
+/* ---------------- persistence ---------------- */
+const NS="arc-binder:";
+function save(el){
+  const k=NS+el.dataset.key;
+  try{
+    if(el.type==="checkbox"){ el.checked?localStorage.setItem(k,"1"):localStorage.removeItem(k); }
+    else{ const v=el.innerText.trim(); v?localStorage.setItem(k,v):localStorage.removeItem(k); }
+    flashSaved();
+  }catch(e){}
+}
+function restore(){
+  document.querySelectorAll("[data-key]").forEach(el=>{
+    const v=localStorage.getItem(NS+el.dataset.key);
+    if(v===null) return;
+    if(el.type==="checkbox") el.checked=(v==="1");
+    else el.textContent=v;
+  });
+}
+let saveTimer;
+function flashSaved(){
+  const s=document.getElementById("save-status");
+  if(!s) return;
+  s.textContent="Saved ✓"; s.style.color="var(--cream)";
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{s.textContent="Saves automatically in this browser";s.style.color="";},1400);
+}
+document.addEventListener("input",e=>{ if(e.target.dataset&&e.target.dataset.key) save(e.target); });
+document.addEventListener("change",e=>{ if(e.target.type==="checkbox"&&e.target.dataset.key) save(e.target); });
+
+/* ---------------- controls ---------------- */
+document.getElementById("btn-print").addEventListener("click",()=>window.print());
+document.getElementById("btn-clear").addEventListener("click",()=>{
+  if(!confirm("Clear every entry in this binder? This can't be undone.")) return;
+  Object.keys(localStorage).forEach(k=>{ if(k.startsWith(NS)) localStorage.removeItem(k); });
+  document.querySelectorAll("[data-key]").forEach(el=>{
+    if(el.type==="checkbox") el.checked=false; else el.textContent="";
+  });
+});
+
+/* active tab on scroll */
+const links=[...document.querySelectorAll(".rail__link")];
+const byId=Object.fromEntries(links.map(l=>[l.getAttribute("href").slice(1),l]));
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      links.forEach(l=>l.classList.remove("is-active"));
+      const l=byId[en.target.id]; if(l) l.classList.add("is-active");
+    }
+  });
+},{rootMargin:"-40% 0px -55% 0px"});
+document.querySelectorAll(".sheet").forEach(s=>io.observe(s));
+
+restore();
+</script>
+</body>
+</html>
