@@ -5,6 +5,11 @@
 [build.environment]
   NODE_VERSION = "20"
 
+[functions]
+  # Ship the AWS S3 SDK (used to sign Neon Object Storage links) as regular
+  # packages instead of inlining it into the ESM function bundle.
+  external_node_modules = ["@aws-sdk/client-s3", "@aws-sdk/s3-request-presigner"]
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
