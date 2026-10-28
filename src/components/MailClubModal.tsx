@@ -51,17 +51,19 @@ export default function MailClubModal() {
     setTimeout(() => setOpen(false), 260)
   }
 
-  const submit = async (e: FormEvent) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!email) return
     setSending(true)
     setError('')
+    const botField = String(new FormData(e.currentTarget).get('bot-field') ?? '')
+    const body = encode({ 'form-name': 'mail-club', firstName, email, 'bot-field': botField })
+    const post = (url: string) =>
+      fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
     try {
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'mail-club', firstName, email, 'bot-field': '' }),
-      })
+      // Our store feeds the /admin dashboard; Netlify Forms keeps a backup + email notifications.
+      const results = await Promise.allSettled([post('/.netlify/functions/mail-club'), post('/__forms.html')])
+      if (!results.some((r) => r.status === 'fulfilled' && r.value.ok)) throw new Error('not saved')
       try { localStorage.setItem('arc_mailclub', 'submitted') } catch { /* storage blocked */ }
       setDone(true)
     } catch {
@@ -124,7 +126,7 @@ export default function MailClubModal() {
 
               <form name="mail-club" method="POST" onSubmit={submit} className="mt-5 space-y-3">
                 <input type="hidden" name="form-name" value="mail-club" />
-                <p className="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+                <p className="hidden"><label>Don’t fill this out: <input name="bot-field" tabIndex={-1} autoComplete="off" /></label></p>
                 <input
                   ref={firstRef}
                   name="firstName"

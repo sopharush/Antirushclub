@@ -1,0 +1,38 @@
+import { getStore } from '@netlify/blobs'
+
+// Saves a Mail Club signup to the "mail-club" Blobs store, keyed by email,
+// so the /admin dashboard can list them. Served at /.netlify/functions/mail-club.
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+
+async function readFields(req: Request): Promise<Record<string, unknown>> {
+  const type = req.headers.get('content-type') ?? ''
+  if (type.includes('application/json')) return (await req.json()) as Record<string, unknown>
+  return Object.fromEntries(new URLSearchParams(await req.text()))
+}
+
+export default async (req: Request) => {
+  if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 })
+
+  let fields: Record<string, unknown>
+  try {
+    fields = await readFields(req)
+  } catch {
+    return Response.json({ ok: false, error: 'bad_request' }, { status: 400 })
+  }
+
+  // Honeypot: real people never fill this; quietly accept and drop bots.
+  if (String(fields['bot-field'] ?? '').trim()) return Response.json({ ok: true })
+
+  const email = String(fields.email ?? '').trim().toLowerCase()
+  const firstName = String(fields.firstName ?? '').trim().slice(0, 80)
+  if (email.length > 254 || !EMAIL.test(email)) {
+    return Response.json({ ok: false, error: 'invalid_email' }, { status: 400 })
+  }
+
+  const store = getStore({ name: 'mail-club', consistency: 'strong' })
+  // onlyIfNew keeps the original signup date when someone joins twice.
+  await store.setJSON(email, { firstName, email, createdAt: new Date().toISOString() }, { onlyIfNew: true })
+
+  return Response.json({ ok: true })
+}
