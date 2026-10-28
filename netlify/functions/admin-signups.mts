@@ -2,12 +2,13 @@ import { createHash, timingSafeEqual } from 'node:crypto'
 import { getStore } from '@netlify/blobs'
 import { db } from '../lib/db.mts'
 
-// Returns every Mail Club signup for the /admin dashboard.
+// Returns one signup list for the /admin dashboard: ?list=club ("Pull Up a Chair",
+// the default) or ?list=mail (Mail Club), plus the size of each list.
 // Requires the x-admin-key header to match the ADMIN_PASSWORD env var.
 // Served at /.netlify/functions/admin-signups.
 
-type Signup = { firstName: string; email: string; createdAt: string }
-type Row = { first_name: string; email: string; created_at: string | Date }
+type Signup = { firstName: string; email: string; createdAt: string; interests?: string[] }
+type Row = { first_name: string; email: string; created_at: string | Date; interests?: string[] }
 
 const NO_STORE = { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' }
 
@@ -47,12 +48,21 @@ export default async (req: Request) => {
     console.error('Blobs carry-over skipped:', err)
   }
 
-  const rows = (await db()`select first_name, email, created_at from mail_club_signups order by created_at desc`) as Row[]
+  const list = new URL(req.url).searchParams.get('list') === 'mail' ? 'mail' : 'club'
+  const rows = (
+    list === 'mail'
+      ? await db()`select first_name, email, created_at from mail_club_signups order by created_at desc`
+      : await db()`select first_name, email, created_at, interests from club_signups order by created_at desc`
+  ) as Row[]
+  const [counts] = (await db()`select (select count(*) from club_signups)::int as club,
+                                      (select count(*) from mail_club_signups)::int as mail`) as { club: number; mail: number }[]
+
   const items: Signup[] = rows.map((r) => ({
     firstName: r.first_name,
     email: r.email,
     createdAt: new Date(r.created_at).toISOString(),
+    ...(r.interests ? { interests: r.interests } : {}),
   }))
 
-  return Response.json({ items }, { headers: NO_STORE })
+  return Response.json({ list, items, counts }, { headers: NO_STORE })
 }

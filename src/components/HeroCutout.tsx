@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { gsap, prefersReducedMotion } from '../lib/motion'
 import { useReady } from '../lib/ReadyContext'
+import { openClubSignup } from '../lib/clubSignup'
 
 // Cut-out figures of the couple, warm-graded, transparent PNG/WebP.
 const FRONT = [
@@ -104,9 +105,9 @@ export default function HeroCutout() {
           Come as you are. Slow down. Stay awhile.
         </p>
         <div ref={cta} className="mt-8">
-          <a href="#invitation" className="kicker inline-block rounded-full bg-espresso px-8 py-4 text-cream transition-transform hover:-translate-y-0.5">
+          <button type="button" onClick={openClubSignup} className="kicker inline-block rounded-full bg-espresso px-8 py-4 text-cream transition-transform hover:-translate-y-0.5">
             Pull Up a Chair
-          </a>
+          </button>
         </div>
       </div>
     </section>

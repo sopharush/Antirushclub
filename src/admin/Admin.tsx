@@ -1,7 +1,20 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Check, Copy, Download, LogOut, RefreshCw, Search } from 'lucide-react'
 
-type Signup = { firstName: string; email: string; createdAt: string }
+type Signup = { firstName: string; email: string; createdAt: string; interests?: string[] }
+type List = 'club' | 'mail'
+type Counts = Record<List, number>
+
+const LISTS: { id: List; label: string }[] = [
+  { id: 'club', label: 'Pull Up a Chair' },
+  { id: 'mail', label: 'Mail Club' },
+]
+const INTEREST_LABELS: Record<string, string> = {
+  events: 'Events',
+  'pop-ups': 'Pop-ups',
+  merch: 'Merch',
+  'mail-club': 'Mail Club',
+}
 
 const KEY_STORAGE = 'arc_admin_key'
 const DAY = 864e5
@@ -26,6 +39,8 @@ export default function Admin() {
   const [key, setKey] = useState(readKey)
   const [code, setCode] = useState('')
   const [items, setItems] = useState<Signup[] | null>(null)
+  const [list, setList] = useState<List>('club')
+  const [counts, setCounts] = useState<Counts | null>(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [query, setQuery] = useState('')
@@ -40,11 +55,11 @@ export default function Admin() {
     return () => { meta.remove() }
   }, [])
 
-  const load = useCallback(async (k: string) => {
+  const load = useCallback(async (k: string, l: List) => {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/.netlify/functions/admin-signups', { headers: { 'x-admin-key': k }, cache: 'no-store' })
+      const res = await fetch(`/.netlify/functions/admin-signups?list=${l}`, { headers: { 'x-admin-key': k }, cache: 'no-store' })
       if (res.status === 401) {
         clearKey()
         setKey('')
@@ -57,8 +72,11 @@ export default function Admin() {
         return
       }
       if (!res.ok) throw new Error(String(res.status))
-      const data = (await res.json()) as { items: Signup[] }
+      const data = (await res.json()) as { items: Signup[]; counts: Counts }
       setItems(data.items)
+      setCounts(data.counts)
+      setList(l)
+      setQuery('')
       setKey(k)
       saveKey(k)
     } catch {
@@ -70,7 +88,7 @@ export default function Admin() {
 
   // Re-open a session that's still in this tab.
   useEffect(() => {
-    if (key) load(key)
+    if (key) load(key, 'club')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -112,12 +130,16 @@ export default function Admin() {
 
   const exportCsv = () => {
     if (!items) return
-    const rows = [['First name', 'Email', 'Signed up'], ...items.map((s) => [s.firstName, s.email, s.createdAt])]
+    const club = list === 'club'
+    const rows = [
+      ['First name', 'Email', 'Signed up', ...(club ? ['Interests'] : [])],
+      ...items.map((s) => [s.firstName, s.email, s.createdAt, ...(club ? [(s.interests ?? []).join('; ')] : [])]),
+    ]
     const csv = rows.map((r) => r.map(csvCell).join(',')).join('\n')
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }))
     const a = document.createElement('a')
     a.href = url
-    a.download = `mail-club-signups-${dayKey(new Date())}.csv`
+    a.download = `${club ? 'pull-up-a-chair' : 'mail-club'}-signups-${dayKey(new Date())}.csv`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -133,7 +155,7 @@ export default function Admin() {
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
-    if (code.trim()) load(code.trim())
+    if (code.trim()) load(code.trim(), 'club')
   }
 
   if (!items || !stats) {
@@ -142,7 +164,7 @@ export default function Admin() {
       <main className="grid min-h-screen place-items-center bg-cream px-5">
         <form onSubmit={submit} className="w-full max-w-[380px] rounded-[20px] bg-choc px-8 py-10 text-center shadow-2xl">
           <p className="kicker" style={{ color: '#e6bd84' }}>Anti-Rush Club · Admin</p>
-          <h1 className="serif mt-3 text-cream" style={{ fontSize: '1.8rem', lineHeight: 1.1 }}>Mail Club signups</h1>
+          <h1 className="serif mt-3 text-cream" style={{ fontSize: '1.8rem', lineHeight: 1.1 }}>Club signups</h1>
           {reopening ? (
             <p className="mt-6 text-[0.9rem] text-cream/70">Opening your dashboard…</p>
           ) : (
@@ -188,11 +210,11 @@ export default function Admin() {
           <div>
             <p className="kicker text-sienna">Anti-Rush Club · Admin</p>
             <h1 className="serif mt-2 text-espresso" style={{ fontSize: 'clamp(2rem, 4vw, 2.6rem)', lineHeight: 1 }}>
-              Mail Club signups
+              Club signups
             </h1>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button className={btn} onClick={() => load(key)} disabled={loading}>
+            <button className={btn} onClick={() => load(key, list)} disabled={loading}>
               <RefreshCw size={13} strokeWidth={1.8} className={loading ? 'animate-spin' : ''} /> Refresh
             </button>
             <button className={btn} onClick={exportCsv} disabled={!items.length}>
@@ -208,9 +230,26 @@ export default function Admin() {
           </div>
         </header>
 
+        <nav className="mt-7 flex gap-2" aria-label="Signup lists">
+          {LISTS.map((l) => (
+            <button
+              key={l.id}
+              onClick={() => l.id !== list && load(key, l.id)}
+              aria-current={l.id === list}
+              disabled={loading}
+              className={`kicker rounded-full px-4 py-2.5 text-[0.62rem] transition-colors ${
+                l.id === list ? 'bg-espresso text-cream' : 'border border-espresso/20 text-espresso hover:bg-espresso/10'
+              }`}
+            >
+              {l.label}
+              {counts && <span className={l.id === list ? 'ml-2 text-cream/60' : 'ml-2 text-inksoft'}>{counts[l.id]}</span>}
+            </button>
+          ))}
+        </nav>
+
         {error && <p className="mt-4 text-[0.85rem] text-sienna">{error}</p>}
 
-        <section className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <section className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
           {tiles.map((t) => (
             <div key={t.label} className="rounded-2xl border border-espresso/10 bg-paper/70 px-5 py-5">
               <p className="kicker text-[0.6rem] text-inksoft">{t.label}</p>
@@ -257,17 +296,18 @@ export default function Admin() {
 
           {items.length === 0 ? (
             <p className="py-12 text-center text-[0.95rem] text-inksoft">
-              No signups yet. They’ll show up here the moment someone joins the Mail Club.
+              No signups on this list yet. They’ll show up here the moment someone joins.
             </p>
           ) : (
             <div className="mt-4 overflow-x-auto">
-              <table className="w-full min-w-[520px] text-left text-[0.92rem]">
+              <table className="w-full min-w-[620px] text-left text-[0.92rem]">
                 <thead>
                   <tr className="border-b border-espresso/15 text-inksoft">
                     <th className="kicker py-3 pr-4 text-[0.6rem] font-medium">#</th>
                     <th className="kicker py-3 pr-4 text-[0.6rem] font-medium">First name</th>
                     <th className="kicker py-3 pr-4 text-[0.6rem] font-medium">Email</th>
-                    <th className="kicker py-3 text-[0.6rem] font-medium">Signed up</th>
+                    <th className="kicker py-3 pr-4 text-[0.6rem] font-medium">Signed up</th>
+                    {list === 'club' && <th className="kicker py-3 text-[0.6rem] font-medium">Interests</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -280,7 +320,12 @@ export default function Admin() {
                           {s.email}
                         </a>
                       </td>
-                      <td className="whitespace-nowrap py-3 text-inksoft">{fullDate(s.createdAt)}</td>
+                      <td className="whitespace-nowrap py-3 pr-4 text-inksoft">{fullDate(s.createdAt)}</td>
+                      {list === 'club' && (
+                        <td className="py-3 text-inksoft">
+                          {s.interests?.length ? s.interests.map((i) => INTEREST_LABELS[i] ?? i).join(', ') : <span>—</span>}
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>

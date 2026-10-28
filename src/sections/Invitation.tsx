@@ -1,4 +1,5 @@
 import PhotoBG from '../components/PhotoBG'
+import { openClubSignup } from '../lib/clubSignup'
 
 /** Closing CTA — the ask, over a warm muted photograph. */
 export default function Invitation() {
@@ -16,9 +17,9 @@ export default function Invitation() {
           and let’s discover together what it truly means to live rich.
         </p>
         <div className="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row" data-reveal data-reveal-delay="0.16">
-          <a href="#top" className="kicker inline-block rounded-full bg-cream px-9 py-4 text-espresso transition-transform hover:-translate-y-0.5">
+          <button type="button" onClick={openClubSignup} className="kicker inline-block rounded-full bg-cream px-9 py-4 text-espresso transition-transform hover:-translate-y-0.5">
             Pull Up a Chair
-          </a>
+          </button>
           <a href="#why" className="kicker text-paper/80 underline-offset-8 hover:underline">
             Learn our story
           </a>

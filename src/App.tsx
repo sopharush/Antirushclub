@@ -8,6 +8,7 @@ import Grain from './components/Grain'
 import Nav from './components/Nav'
 import Preloader from './components/Preloader'
 import MailClubModal from './components/MailClubModal'
+import ClubSignupModal from './components/ClubSignupModal'
 import HeroCutout from './components/HeroCutout'
 import Footer from './components/Footer'
 
@@ -51,6 +52,7 @@ export default function App() {
       </main>
       <Footer />
       <MailClubModal />
+      <ClubSignupModal />
     </>
   )
 }
