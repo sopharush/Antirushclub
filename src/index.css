@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #efe3c8;
+  --cream-2: #e7d6b4;
+  --sand: #d8c29a;
+  --caramel: #c0904f;
+  --sienna: #a85436;
+  --espresso: #281a10;
+  --cocoa: #3f2a1a;
+  --ink: #2b1d12;
+  --ink-soft: #6c523a;
+  --paper: #f0e5ce;
+  --paper-dim: #c7b393;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Jost', system-ui, sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--sienna); color: var(--paper); }
+
+h1, h2, h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-optical-sizing: auto;
+  font-variation-settings: 'opsz' 144, 'SOFT' 6, 'WONK' 1;
+  margin: 0;
+}
+
+/* ---- utility type ---- */
+.kicker {
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+.serif { font-family: 'Fraunces', Georgia, serif; }
+.italic-serif { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400; }
+
+/* ---- kinetic masked lines (GSAP owns the transform) ---- */
+.mask-line { display: block; overflow: hidden; }
+.mask-inner { display: block; will-change: transform; }
+
+/* ---- pre-reveal hidden states: applied ONLY when JS is on ---- */
+html.js [data-reveal] { opacity: 0; visibility: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] { opacity: 1; visibility: visible; }
+}
+
+/* ---- film grain ---- */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 170px 170px;
+  animation: grain-shift 6s steps(6) infinite;
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-4%, 3%); }
+  40% { transform: translate(3%, -5%); }
+  60% { transform: translate(-3%, 4%); }
+  80% { transform: translate(4%, 2%); }
+  100% { transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) { .grain { animation: none; } }
+
+/* ---- global warm vignette (nostalgic film edge) ---- */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  background: radial-gradient(130% 110% at 50% 42%, transparent 55%, rgba(40,26,16,0.28) 100%);
+}
+
+/* ---- slow Ken-Burns drift for photo backdrops ---- */
+.kenburns { animation: kenburns 28s ease-in-out infinite alternate; will-change: transform; }
+@keyframes kenburns {
+  from { transform: scale(1.06) translate(0, 0); }
+  to { transform: scale(1.16) translate(-2%, -1.5%); }
+}
+@media (prefers-reduced-motion: reduce) { .kenburns { animation: none; transform: scale(1.06); } }
+
+/* ---- vintage photo frame ---- */
+.vframe {
+  border: 7px solid var(--paper);
+  box-shadow: 0 24px 60px rgba(40,26,16,0.4);
+  border-radius: 2px;
+}
+
+/* ---- hairline ---- */
+.hairline { height: 1px; background: currentColor; opacity: 0.28; }
+
+/* ---- focus ---- */
+:focus-visible { outline: 2px solid var(--sienna); outline-offset: 3px; border-radius: 2px; }
+
+/* ---- marquee ---- */
+.marquee { display: flex; overflow: hidden; white-space: nowrap; user-select: none; }
+.marquee__track { display: flex; flex: none; gap: 0; animation: marquee 55s linear infinite; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } }
+
+/* ---- horizontal-scroll fallback (reduced motion / no-pin) ---- */
+.hstrip { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.hstrip > * { scroll-snap-align: start; }
+
+/* ---- film-print hero marquee ---- */
+.filmrow { position: relative; display: flex; width: 100%; overflow: hidden; }
+.filmrow__track {
+  display: flex;
+  flex: none;
+  align-items: center;
+  will-change: transform;
+  padding-block: 26px; /* headroom so rotated prints + shadows aren't clipped */
+}
+.filmrow__track--left { animation: film-left var(--dur, 64s) linear infinite; }
+.filmrow__track--right { animation: film-right var(--dur, 78s) linear infinite; }
+@keyframes film-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+@keyframes film-right { from { transform: translate3d(-50%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+@media (prefers-reduced-motion: reduce) {
+  .filmrow__track--left,
+  .filmrow__track--right { animation: none; }
+}
+
+/* a single vintage print in the marquee */
+.print {
+  position: relative;
+  flex: none;
+  background: var(--paper);
+  padding: 7px;
+  border-radius: 2px;
+  box-shadow: 0 20px 44px rgba(40, 26, 16, 0.34), 0 4px 12px rgba(40, 26, 16, 0.22);
+  overflow: hidden;
+}
+.print > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1px;
+  /* warm, slightly faded vintage grade layered on the already-graded photo */
+  filter: saturate(0.9) contrast(1.02) brightness(1.01) sepia(0.08);
+}
+.print__wash {
+  position: absolute;
+  inset: 7px;
+  border-radius: 1px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(168, 84, 54, 0.05) 0%, rgba(40, 26, 16, 0.14) 100%);
+  mix-blend-mode: multiply;
+}
+/* back row: smaller presence, hazier, pushed behind */
+.print--back { box-shadow: 0 14px 30px rgba(40, 26, 16, 0.26), 0 3px 8px rgba(40, 26, 16, 0.18); opacity: 0.9; }
+.print--back > img { filter: saturate(0.82) contrast(1.0) brightness(1.03) sepia(0.12); }
+.print--back .print__wash { background: linear-gradient(180deg, rgba(239, 227, 200, 0.14) 0%, rgba(40, 26, 16, 0.1) 100%); }
+
+/* ---- cut-out figure hero marquee ---- */
+.cutrow { position: absolute; left: 0; width: 100%; display: flex; pointer-events: none; }
+.cutrow--front { bottom: 0; z-index: 2; }
+.cutrow--back { bottom: 8%; z-index: 1; }
+.cutrow .filmrow__track { align-items: flex-end; padding-block: 0; }
+.cutfig { flex: none; width: auto; margin-right: clamp(26px, 5vw, 86px); }
+.cutfig--front {
+  height: clamp(250px, 44vh, 460px);
+  filter: drop-shadow(0 26px 30px rgba(40, 26, 16, 0.26));
+}
+.cutfig--back {
+  height: clamp(168px, 30vh, 320px);
+  opacity: 0.55;
+  filter: saturate(0.82) brightness(1.04) blur(1.3px) drop-shadow(0 18px 22px rgba(40, 26, 16, 0.18));
+}

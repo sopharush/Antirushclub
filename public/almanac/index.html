@@ -394,7 +394,7 @@ form.addEventListener("submit",async e=>{
   store(email);
   try{
     const body=new URLSearchParams({"form-name":"signup","email":email});
-    await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:body.toString()});
+    await fetch(window.location.pathname,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:body.toString()});
   }catch(_){/* not on Netlify — capture happens only when hosted there */}
 });
 /* returning visitor: show download straight away */

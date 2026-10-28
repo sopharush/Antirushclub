@@ -1,19 +1,11 @@
-# Netlify deploy config for The Family Almanac landing page
 [build]
-  publish = "site"
+  command = "npm run build"
+  publish = "dist"
 
-# Nice URLs for the two main files (optional)
+[build.environment]
+  NODE_VERSION = "20"
+
 [[redirects]]
-  from = "/almanac"
-  to = "/family-almanac.html"
+  from = "/*"
+  to = "/index.html"
   status = 200
-
-# Long-cache the static assets
-[[headers]]
-  for = "/previews/*"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
-[[headers]]
-  for = "/The-Family-Almanac.pdf"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
