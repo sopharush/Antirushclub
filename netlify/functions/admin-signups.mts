@@ -49,13 +49,20 @@ export default async (req: Request) => {
   }
 
   const list = new URL(req.url).searchParams.get('list') === 'mail' ? 'mail' : 'club'
-  const rows = (
-    list === 'mail'
-      ? await db()`select first_name, email, created_at from mail_club_signups order by created_at desc`
-      : await db()`select first_name, email, created_at, interests from club_signups order by created_at desc`
-  ) as Row[]
-  const [counts] = (await db()`select (select count(*) from club_signups)::int as club,
-                                      (select count(*) from mail_club_signups)::int as mail`) as { club: number; mail: number }[]
+  let rows: Row[]
+  let counts: { club: number; mail: number }
+  try {
+    rows = (
+      list === 'mail'
+        ? await db()`select first_name, email, created_at from mail_club_signups order by created_at desc`
+        : await db()`select first_name, email, created_at, interests from club_signups order by created_at desc`
+    ) as Row[]
+    ;[counts] = (await db()`select (select count(*) from club_signups)::int as club,
+                                   (select count(*) from mail_club_signups)::int as mail`) as { club: number; mail: number }[]
+  } catch (err) {
+    console.error('admin-signups failed:', err)
+    return Response.json({ error: 'unavailable' }, { status: 503, headers: NO_STORE })
+  }
 
   const items: Signup[] = rows.map((r) => ({
     firstName: r.first_name,

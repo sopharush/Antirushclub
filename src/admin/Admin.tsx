@@ -68,7 +68,12 @@ export default function Admin() {
         return
       }
       if (res.status === 503) {
-        setError('The admin passcode isn’t set up on Netlify yet (ADMIN_PASSWORD).')
+        const body = (await res.json().catch(() => ({}))) as { error?: string }
+        setError(
+          body.error === 'not_configured'
+            ? 'The admin passcode isn’t set up on Netlify yet (ADMIN_PASSWORD).'
+            : 'Couldn’t reach the signup database. Check DATABASE_URL on Netlify.',
+        )
         return
       }
       if (!res.ok) throw new Error(String(res.status))

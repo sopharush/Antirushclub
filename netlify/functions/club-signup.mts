@@ -29,11 +29,16 @@ export default async (req: Request) => {
   const picked = [...new Set((fields.interests ?? '').split(',').filter((i) => INTERESTS.has(i)))]
   const interests = `{${picked.join(',')}}`
 
-  await db()`insert into club_signups (email, first_name, interests)
+  try {
+    await db()`insert into club_signups (email, first_name, interests)
              values (${email}, ${firstName}, ${interests}::text[])
              on conflict (email) do update set
                interests  = array(select distinct unnest(club_signups.interests || excluded.interests) order by 1),
                first_name = case when club_signups.first_name = '' then excluded.first_name else club_signups.first_name end`
+  } catch (err) {
+    console.error('club-signup failed:', err)
+    return Response.json({ ok: false, error: 'unavailable' }, { status: 503 })
+  }
 
   return Response.json({ ok: true })
 }

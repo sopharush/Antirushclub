@@ -31,7 +31,12 @@ export default async (req: Request) => {
   }
 
   // Keep the original signup date when someone joins twice.
-  await db()`insert into mail_club_signups (email, first_name) values (${email}, ${firstName}) on conflict (email) do nothing`
+  try {
+    await db()`insert into mail_club_signups (email, first_name) values (${email}, ${firstName}) on conflict (email) do nothing`
+  } catch (err) {
+    console.error('mail-club failed:', err)
+    return Response.json({ ok: false, error: 'unavailable' }, { status: 503 })
+  }
 
   return Response.json({ ok: true })
 }
