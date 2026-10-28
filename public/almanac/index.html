@@ -217,7 +217,7 @@ footer .fine{font-size:.72rem;margin-top:14px;opacity:.8;}
             <h3>Your Almanac is ready 🤎</h3>
             <p class="small">Thank you for joining. Download the printable PDF, or open the fill-in-online version — your choice.</p>
             <div class="dl-row">
-              <a class="btn btn--choc" id="dl-pdf" href="#">Download the PDF</a>
+              <a class="btn btn--choc" id="dl-pdf" href="The-Family-Almanac.pdf" download>Download the PDF</a>
               <a class="btn btn--ghost" id="use-online" href="#" target="_blank" rel="noopener">Use it online</a>
             </div>
           </div>
@@ -371,37 +371,25 @@ function reveal(){ cap.classList.add("done"); okEl.classList.add("show"); }
 function store(email){
   try{ localStorage.setItem(NS, JSON.stringify({email,at:Date.now()})); }catch(e){}
 }
-function savedEmail(){
-  try{ return (JSON.parse(localStorage.getItem(NS)||"{}").email)||""; }catch(e){ return ""; }
-}
-/* The PDF lives in a private bucket: the server records the email and returns a 10-minute link */
-async function requestLink(email,bot){
-  const body=new URLSearchParams({email,"bot-field":bot||""});
-  const res=await fetch("/.netlify/functions/almanac-download",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:body.toString()});
-  const data=await res.json().catch(()=>({}));
-  if(!res.ok||!data.url) throw new Error(data.error||"unavailable");
-  return data.url;
-}
+/* PDF download: use the artifact download bridge when present, else a normal link */
 async function downloadPdf(e){
+  let downloads=null;
+  try{ downloads=await claude.use("downloads"); }catch(_){ }
+  if(!downloads) return; /* not in an artifact — let the native href download run */
   e.preventDefault();
-  const email=savedEmail();
-  if(!email){ cap.classList.remove("done"); okEl.classList.remove("show"); emailEl.focus(); return; }
-  const a=e.currentTarget, label="Download the PDF";
-  a.textContent="Preparing…";
+  const a=e.currentTarget, label=a.textContent; a.textContent="Preparing…";
   try{
-    window.location.href=await requestLink(email);
-    a.textContent=label;
-  }catch(err){ a.textContent="Try again"; }
+    const blob=await (await fetch("The-Family-Almanac.pdf")).blob();
+    await downloads.save({filename:"The-Family-Almanac.pdf", data:blob});
+  }catch(err){}
+  a.textContent=label;
 }
 document.getElementById("dl-pdf").addEventListener("click",downloadPdf);
 form.addEventListener("submit",async e=>{
   e.preventDefault();
   const email=(emailEl.value||"").trim();
-  if(!valid(email)){ errEl.textContent="Please enter a valid email address."; errEl.classList.add("show"); emailEl.focus(); return; }
+  if(!valid(email)){ errEl.classList.add("show"); emailEl.focus(); return; }
   errEl.classList.remove("show");
-  const btn=form.querySelector("button"); btn.disabled=true;
-  try{ await requestLink(email,new FormData(form).get("bot-field")); }
-  catch(_){ errEl.textContent="Something went wrong. Please try again in a moment."; errEl.classList.add("show"); btn.disabled=false; return; }
   reveal();
   store(email);
   try{
