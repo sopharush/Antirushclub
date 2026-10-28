@@ -38,6 +38,8 @@ export default function PhotoBG({
         className="absolute inset-0"
         style={{ background: 'radial-gradient(125% 110% at 50% 45%, transparent 55%, rgba(24,14,7,0.45) 100%)' }}
       />
+      {/* printed paper texture */}
+      <div className="paper" />
     </div>
   )
 }

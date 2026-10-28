@@ -1,5 +1,3 @@
-import Photo from '../components/Photo'
-
 export default function Why() {
   return (
     <section id="why" className="relative bg-cream py-28 md:py-40">
@@ -29,11 +27,28 @@ export default function Why() {
           </div>
         </div>
 
-        <div className="relative" data-reveal>
-          <Photo src="/photos/why-main.jpg" alt="Anti-Rush Club — together" position="center 30%" className="vframe aspect-[4/5] w-full" />
-          <div className="absolute -bottom-7 -left-7 hidden md:block" data-parallax="80">
-            <Photo src="/photos/why-small.jpg" alt="A quiet moment" position="center 62%" className="vframe h-44 w-32" />
+        {/* Cut-out couple on a soft clay glow (the complement to their sage and khaki), no frame */}
+        <div className="relative mx-auto w-full max-w-[500px]" data-reveal>
+          <div className="pointer-events-none absolute inset-0" aria-hidden="true" data-parallax="50">
+            <div
+              className="absolute left-[-14%] top-[-8%] aspect-square w-[128%] rounded-full"
+              style={{
+                background:
+                  'radial-gradient(closest-side, rgba(194,114,80,0.62) 0%, rgba(205,136,100,0.44) 55%, rgba(239,227,200,0) 100%)',
+              }}
+            />
           </div>
+          <img
+            src="/photos/cutouts/why-embrace.webp"
+            alt="Sopha and Anthony Rush holding each other close"
+            className="relative z-10 w-full"
+            style={{
+              maskImage: 'linear-gradient(180deg, #000 80%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(180deg, #000 80%, transparent 100%)',
+            }}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       </div>
     </section>
