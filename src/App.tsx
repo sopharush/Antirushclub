@@ -8,7 +8,7 @@ import Grain from './components/Grain'
 import Nav from './components/Nav'
 import Preloader from './components/Preloader'
 import MailClubModal from './components/MailClubModal'
-import Hero from './components/Hero'
+import HeroMarquee from './components/HeroMarquee'
 import Footer from './components/Footer'
 
 import Why from './sections/Why'
@@ -41,7 +41,7 @@ export default function App() {
       <Preloader />
       <Nav />
       <main>
-        <Hero />
+        <HeroMarquee />
         <Why />
         <SeriesScroll />
         <Values />
