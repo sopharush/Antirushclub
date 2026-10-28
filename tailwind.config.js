@@ -6,6 +6,7 @@ export default {
       colors: {
         cream: '#efe3c8',
         cream2: '#e7d6b4',
+        choc: '#3a2318',
         sand: '#d8c29a',
         caramel: '#c0904f',
         sienna: '#a85436',

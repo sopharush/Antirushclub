@@ -7,6 +7,7 @@ import { useReveal } from './hooks/useReveal'
 import Grain from './components/Grain'
 import Nav from './components/Nav'
 import Preloader from './components/Preloader'
+import MailClubModal from './components/MailClubModal'
 import Hero from './components/Hero'
 import Footer from './components/Footer'
 
@@ -49,6 +50,7 @@ export default function App() {
         <Invitation />
       </main>
       <Footer />
+      <MailClubModal />
     </>
   )
 }
