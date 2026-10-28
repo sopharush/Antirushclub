@@ -1,6 +1,6 @@
-import { getStore } from '@netlify/blobs'
+import { db } from '../lib/db.mts'
 
-// Saves a Mail Club signup to the "mail-club" Blobs store, keyed by email,
+// Saves a Mail Club signup to Postgres (mail_club_signups), one row per email,
 // so the /admin dashboard can list them. Served at /.netlify/functions/mail-club.
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
@@ -30,9 +30,8 @@ export default async (req: Request) => {
     return Response.json({ ok: false, error: 'invalid_email' }, { status: 400 })
   }
 
-  const store = getStore({ name: 'mail-club', consistency: 'strong' })
-  // onlyIfNew keeps the original signup date when someone joins twice.
-  await store.setJSON(email, { firstName, email, createdAt: new Date().toISOString() }, { onlyIfNew: true })
+  // Keep the original signup date when someone joins twice.
+  await db()`insert into mail_club_signups (email, first_name) values (${email}, ${firstName}) on conflict (email) do nothing`
 
   return Response.json({ ok: true })
 }

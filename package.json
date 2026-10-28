@@ -10,6 +10,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@neon/config": "^1.9.5",
+    "@neon/env": "^1.6.6",
+    "@neondatabase/serverless": "^1.2.0",
     "@netlify/blobs": "^11.1.7",
     "gsap": "^3.12.5",
     "lenis": "^1.1.17",

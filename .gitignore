@@ -7,3 +7,6 @@ dist-ssr
 .netlify
 .vercel
 npm-debug.log*
+.neon
+.env
+.env.*
