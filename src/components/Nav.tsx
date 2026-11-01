@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { openClubSignup } from '../lib/clubSignup'
+import Wordmark from './Wordmark'
 
 const LINKS = [
   { label: 'Our Why', href: '#why' },
@@ -35,9 +36,9 @@ export default function Nav() {
       }`}
       aria-hidden={!shown}
     >
-      <div className="mx-auto flex max-w-[1240px] items-center justify-between px-6 py-5 md:px-10">
-        <a href="#top" className={`serif text-[1.15rem] font-semibold tracking-[0.08em] transition-colors duration-500 ${textCls}`}>
-          Anti-Rush Club
+      <div className="mx-auto flex max-w-[1240px] items-center justify-between px-6 py-3 md:px-10">
+        <a href="#top" aria-label="Anti-Rush Club, back to top" className="text-brand transition-opacity hover:opacity-80">
+          <Wordmark className="block h-10 w-auto md:h-11" />
         </a>
         <nav className="flex items-center gap-7">
           {LINKS.map((l) => (

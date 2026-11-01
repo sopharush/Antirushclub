@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 import { gsap, prefersReducedMotion } from '../lib/motion'
 import { useReady } from '../lib/ReadyContext'
 import { openClubSignup } from '../lib/clubSignup'
+import Wordmark from './Wordmark'
 
 // Cut-out figures of the couple, warm-graded, transparent PNG/WebP.
 const FRONT = [
@@ -44,15 +45,14 @@ export default function HeroCutout() {
   const reduced = prefersReducedMotion()
 
   const kicker = useRef<HTMLParagraphElement>(null)
-  const l1 = useRef<HTMLSpanElement>(null)
-  const l2 = useRef<HTMLSpanElement>(null)
+  const mark = useRef<HTMLSpanElement>(null)
   const tag = useRef<HTMLParagraphElement>(null)
   const cta = useRef<HTMLDivElement>(null)
   const figs = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
     if (reduced) return
-    gsap.set([l1.current, l2.current], { yPercent: 118 })
+    gsap.set(mark.current, { clipPath: 'inset(0% 0% 100% 0%)', y: 26 })
     gsap.set([kicker.current, tag.current, cta.current], { autoAlpha: 0, y: 22 })
     gsap.set(figs.current, { autoAlpha: 0 })
   }, [reduced])
@@ -62,7 +62,7 @@ export default function HeroCutout() {
     const tl = gsap.timeline()
     tl.to(figs.current, { autoAlpha: 1, duration: 1.3, ease: 'power2.out' })
       .to(kicker.current, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=1.0')
-      .to([l1.current, l2.current], { yPercent: 0, duration: 1.3, ease: 'power4.out', stagger: 0.12 }, '-=0.5')
+      .to(mark.current, { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: 1.6, ease: 'power3.inOut' }, '-=0.5')
       .to(tag.current, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.7')
       .to(cta.current, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.55')
     return () => { tl.kill() }
@@ -88,20 +88,19 @@ export default function HeroCutout() {
       </div>
 
       {/* wordmark — upper-center, over a soft cream halo for legibility */}
-      <div className="relative z-10 px-6 pt-[18vh] text-center">
+      <div className="relative z-10 px-6 pt-[18vh] text-center md:pt-[14vh]">
         <div
           className="pointer-events-none absolute left-1/2 top-[46%] -z-10 h-[150%] w-[118%] -translate-x-1/2 -translate-y-1/2"
           style={{ background: 'radial-gradient(58% 50% at 50% 50%, rgba(239,227,200,0.95) 0%, rgba(239,227,200,0.66) 44%, rgba(239,227,200,0) 72%)' }}
         />
         <p ref={kicker} className="kicker mb-5 text-sienna">A slow-living club · rooted in faith</p>
-        <h1
-          className="serif uppercase text-espresso"
-          style={{ fontSize: 'clamp(2.6rem, 9vw, 7rem)', lineHeight: 0.9, letterSpacing: '0.012em' }}
-        >
-          <span className="block overflow-hidden"><span ref={l1} className="block">Anti-Rush</span></span>
-          <span className="block overflow-hidden"><span ref={l2} className="block italic-serif" style={{ textTransform: 'none' }}>Club</span></span>
+        <h1 className="mx-auto" style={{ width: 'min(86vw, 680px, 64vh)' }}>
+          <span className="sr-only">Anti-Rush Club</span>
+          <span ref={mark} className="block text-brand">
+            <Wordmark className="block h-auto w-full" />
+          </span>
         </h1>
-        <p ref={tag} className="italic-serif mx-auto mt-6 text-ink" style={{ fontSize: 'clamp(1.05rem, 2.1vw, 1.5rem)' }}>
+        <p ref={tag} className="italic-serif mx-auto mt-7 text-ink" style={{ fontSize: 'clamp(1.05rem, 2.1vw, 1.5rem)' }}>
           Come as you are. Slow down. Stay awhile.
         </p>
         <div ref={cta} className="mt-8">

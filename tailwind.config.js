@@ -7,6 +7,7 @@ export default {
         cream: '#efe3c8',
         cream2: '#e7d6b4',
         choc: '#3a2318',
+        brand: '#7f5236',
         sand: '#d8c29a',
         caramel: '#c0904f',
         sienna: '#a85436',

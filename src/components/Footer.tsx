@@ -1,11 +1,12 @@
 import { Instagram } from 'lucide-react'
+import Wordmark from './Wordmark'
 
 export default function Footer() {
   return (
     <footer className="bg-espresso py-14">
       <div className="mx-auto flex max-w-[1240px] flex-col items-center gap-6 px-6 text-center md:flex-row md:justify-between md:px-10 md:text-left">
-        <div className="flex flex-col items-center gap-1.5 md:items-start">
-          <span className="serif text-paper text-lg font-semibold tracking-[0.1em]">Anti-Rush Club</span>
+        <div className="flex flex-col items-center gap-3 md:items-start">
+          <Wordmark title="Anti-Rush Club" className="block h-16 w-auto text-paper md:h-[4.5rem]" />
           <span className="italic-serif text-paper/70">Come as you are. Slow down. Stay awhile.</span>
         </div>
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap, prefersReducedMotion } from '../lib/motion'
 import { useReady } from '../lib/ReadyContext'
+import Wordmark from './Wordmark'
 
 export default function Preloader() {
   const root = useRef<HTMLDivElement>(null)
@@ -25,7 +26,7 @@ export default function Preloader() {
       ref={root}
       className="fixed inset-0 z-[80] flex flex-col items-center justify-center bg-paper"
     >
-      <div className="serif text-choc text-2xl md:text-3xl tracking-[0.04em]">Anti-Rush Club</div>
+      <Wordmark title="Anti-Rush Club" className="block h-auto w-[min(62vw,260px)] text-brand" />
       <div className="mt-6 h-px w-40 overflow-hidden bg-choc/15">
         <div ref={bar} className="h-full w-full origin-left scale-x-0 bg-choc" />
       </div>
