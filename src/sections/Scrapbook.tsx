@@ -64,35 +64,53 @@ export default function Scrapbook() {
             <span className="mask-line"><span className="mask-inner italic-serif text-sand">long enough to laugh.</span></span>
           </h2>
         </div>
-        <p className="kicker hidden pt-1 text-paper/60 md:block" data-reveal>Vol. 01</p>
+        <p className="relative hidden md:block" data-reveal>
+          <span className="tape tape--masking tape--tag" aria-hidden="true" />
+          <span className="tape__marker relative" style={{ fontSize: '1.15rem', padding: '0 1.4rem' }}>vol. 01</span>
+        </p>
       </div>
 
       {/* the strip */}
       <div className="relative z-10 mt-14 md:mt-16" data-reveal>
         <div className="scrapbook__strip">
           <Print src="/photos/gal-4.jpg" alt="Anti-Rush Club — leaning in close" position="center 28%" className="scrapbook__p1">
-            <Tape kind="clear" style={{ top: '-5%', left: '6%', width: '58%', transform: 'rotate(-2deg)' }} />
-            <Tape kind="masking" style={{ top: '72%', left: '-8%', width: '72%', transform: 'rotate(-3deg)' }} />
-            <Tape kind="masking" style={{ top: '81%', left: '6%', width: '56%', transform: 'rotate(-5deg)' }} />
-          </Print>
-
-          <Print src="/photos/hero-1.jpg" alt="Anti-Rush Club — the two of us, mid-laugh" position="58% 30%" className="scrapbook__p2">
-            <Tape kind="clear" className="tape--corner" style={{ top: '-3%', left: '-5%', width: '24%', transform: 'rotate(-38deg)' }} />
-            <Tape kind="clear" className="tape--corner" style={{ top: '-2%', right: '-5%', width: '24%', transform: 'rotate(40deg)' }} />
-            <Tape kind="clear" className="tape--corner" style={{ bottom: '-2%', left: '-4%', width: '22%', transform: 'rotate(42deg)' }} />
-            <Tape kind="gaffer" style={{ bottom: '9%', right: '7%', width: '38%', transform: 'rotate(-4deg)' }}>
-              <span className="tape__label">no rush, just us</span>
+            <Tape kind="clear" className="tape--wide" style={{ top: '-6%', left: '2%', width: '70%', transform: 'rotate(-3deg)' }} />
+            <Tape kind="masking" className="tape--wide" style={{ top: '-4%', right: '-12%', width: '46%', transform: 'rotate(38deg)' }} />
+            <Tape kind="masking" className="tape--wide" style={{ top: '84%', right: '-6%', width: '74%', transform: 'rotate(-6deg)' }}>
+              <span className="tape__marker">be still.</span>
             </Tape>
           </Print>
 
+          <Print src="/photos/hero-1.jpg" alt="Anti-Rush Club — the two of us, mid-laugh" position="58% 30%" className="scrapbook__p2">
+            <Tape kind="masking" className="tape--wide" style={{ top: '-1%', left: '-7%', width: '26%', transform: 'rotate(-36deg)' }} />
+            <Tape kind="clear" className="tape--wide" style={{ top: '-6%', left: '34%', width: '34%', transform: 'rotate(2deg)' }} />
+            <Tape kind="masking" className="tape--wide" style={{ top: '0%', right: '-8%', width: '28%', transform: 'rotate(40deg)' }} />
+            <Tape kind="clear" className="tape--wide" style={{ top: '4%', right: '-6%', width: '22%', transform: 'rotate(52deg)' }} />
+            <Tape kind="clear" className="tape--wide" style={{ bottom: '0%', left: '-6%', width: '26%', transform: 'rotate(40deg)' }} />
+            <Tape kind="masking" className="tape--wide" style={{ bottom: '-4%', left: '14%', width: '30%', transform: 'rotate(-3deg)' }}>
+              <span className="tape__marker">sat. mornings</span>
+            </Tape>
+            <Tape kind="gaffer" className="tape--wide" style={{ bottom: '8%', right: '5%', width: '40%', transform: 'rotate(-4deg)' }}>
+              <span className="tape__label">no rush, just us</span>
+            </Tape>
+            <Tape kind="masking" className="tape--wide" style={{ bottom: '-2%', right: '-7%', width: '24%', transform: 'rotate(-40deg)' }} />
+          </Print>
+
           <Print src="/photos/gal-2.jpg" alt="Anti-Rush Club — laughing together" position="center 22%" className="scrapbook__p3">
-            <Tape kind="clear" style={{ top: '-6%', left: '18%', width: '56%', transform: 'rotate(1.5deg)' }} />
-            <Tape kind="blush" style={{ top: '84%', right: '-12%', width: '50%', transform: 'rotate(-30deg)' }} />
-            <Tape kind="blush" style={{ top: '90%', right: '-4%', width: '38%', transform: 'rotate(14deg)' }} />
+            <Tape kind="masking" className="tape--wide" style={{ top: '-6%', left: '10%', width: '72%', transform: 'rotate(2deg)' }} />
+            <Tape kind="clear" className="tape--wide" style={{ top: '-2%', left: '30%', width: '52%', transform: 'rotate(-4deg)' }} />
+            <Tape kind="masking" className="tape--wide" style={{ top: '82%', left: '-14%', width: '52%', transform: 'rotate(24deg)' }} />
+            <Tape kind="blush" className="tape--wide" style={{ top: '84%', right: '-12%', width: '54%', transform: 'rotate(-30deg)' }} />
+            <Tape kind="blush" className="tape--wide" style={{ top: '90%', right: '-4%', width: '42%', transform: 'rotate(14deg)' }} />
           </Print>
 
           <Print src="/photos/pause.jpg" alt="Anti-Rush Club — a quiet moment" position="center 30%" className="scrapbook__p4">
-            <Tape kind="gaffer" style={{ top: '-3%', left: '24%', width: '46%', transform: 'rotate(-1deg)' }} />
+            <Tape kind="gaffer" className="tape--wide" style={{ top: '-4%', left: '12%', width: '56%', transform: 'rotate(-2deg)' }} />
+            <Tape kind="masking" className="tape--wide" style={{ top: '-1%', left: '-12%', width: '40%', transform: 'rotate(-40deg)' }} />
+            <Tape kind="masking" className="tape--wide" style={{ bottom: '6%', left: '-10%', width: '70%', transform: 'rotate(-6deg)' }}>
+              <span className="tape__marker">look up</span>
+            </Tape>
+            <Tape kind="clear" className="tape--wide" style={{ bottom: '-3%', left: '6%', width: '60%', transform: 'rotate(3deg)' }} />
           </Print>
 
           {/* masking-tape arrow pointing at the close-up */}
