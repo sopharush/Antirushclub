@@ -11,6 +11,7 @@ import Hero from './components/Hero'
 import Footer from './components/Footer'
 
 import Why from './sections/Why'
+import Scrapbook from './sections/Scrapbook'
 import SeriesScroll from './sections/SeriesScroll'
 import Pause from './sections/Pause'
 import Values from './sections/Values'
@@ -42,6 +43,7 @@ export default function App() {
       <main>
         <Hero />
         <Why />
+        <Scrapbook />
         <SeriesScroll />
         <Values />
         <Pause />

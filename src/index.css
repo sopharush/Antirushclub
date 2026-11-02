@@ -122,3 +122,131 @@ html.js [data-reveal] { opacity: 0; visibility: hidden; }
 /* ---- horizontal-scroll fallback (reduced motion / no-pin) ---- */
 .hstrip { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
 .hstrip > * { scroll-snap-align: start; }
+
+/* ======================================================================
+   Scrapbook — prints taped to a dark wall (masking / clear / gaffer tape)
+   ====================================================================== */
+.scrapbook { --u: min(1vw, 17px); }
+.scrapbook__light {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(118deg, transparent 38%, rgba(240,229,206,0.06) 46%, transparent 58%),
+    linear-gradient(118deg, transparent 62%, rgba(240,229,206,0.04) 68%, transparent 76%),
+    radial-gradient(90% 70% at 30% 0%, rgba(192,144,79,0.10), transparent 70%);
+}
+
+.scrapbook__strip {
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(var(--u) * 20) calc(var(--u) * 44) calc(var(--u) * 24) calc(var(--u) * 20);
+  column-gap: calc(var(--u) * 2.5);
+  width: max-content;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.scrapbook__strip .print { height: calc(var(--u) * 32); }
+
+/* ---- a printed, folded photo ---- */
+.print__paper {
+  position: absolute; inset: 0; overflow: hidden;
+  background: #e9dfca;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.35);
+}
+.print__paper img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: sepia(0.18) saturate(0.82) contrast(0.92) brightness(0.97);
+}
+.print__folds {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    /* horizontal crease */
+    linear-gradient(180deg, transparent calc(50% - 6px), rgba(0,0,0,0.10) calc(50% - 1px), rgba(255,255,255,0.28) 50%, rgba(255,255,255,0.06) calc(50% + 3px), transparent calc(50% + 10px)),
+    /* faint vertical crease */
+    linear-gradient(90deg, transparent calc(50% - 4px), rgba(0,0,0,0.06) calc(50% - 1px), rgba(255,255,255,0.16) 50%, transparent calc(50% + 6px)),
+    /* paper sheen + edge fade */
+    linear-gradient(125deg, rgba(255,255,255,0.12), transparent 35%, transparent 70%, rgba(40,26,16,0.18)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.94 0 0 0 0 0.9 0 0 0 0 0.8 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+.print__folds::after {
+  /* washed-out film haze */
+  content: ''; position: absolute; inset: 0;
+  background: rgba(240,229,206,0.10);
+  mix-blend-mode: screen;
+}
+
+/* ---- tape ---- */
+.tape {
+  position: absolute; z-index: 3; display: block;
+  height: clamp(14px, calc(var(--u) * 3.1), 56px);
+  /* torn ends */
+  clip-path: polygon(
+    2% 0, 98% 0, 100% 14%, 97.5% 30%, 99.5% 48%, 97% 66%, 100% 84%, 98.5% 100%,
+    1.5% 100%, 0 86%, 2.5% 68%, 0.5% 50%, 3% 32%, 0 16%);
+  pointer-events: none;
+}
+.tape--masking {
+  background:
+    repeating-linear-gradient(97deg, transparent 0 18px, rgba(120,95,50,0.07) 18px 20px, transparent 20px 41px),
+    linear-gradient(180deg, rgba(255,250,230,0.25), transparent 30%, transparent 70%, rgba(110,85,45,0.12)),
+    rgba(232,218,176,0.93);
+}
+.tape--clear {
+  height: clamp(16px, calc(var(--u) * 3.6), 62px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.26) 0 1px, transparent 1px calc(100% - 1px), rgba(255,255,255,0.26) calc(100% - 1px)),
+    repeating-linear-gradient(80deg, transparent 0 14px, rgba(255,255,255,0.10) 14px 16px, transparent 16px 34px),
+    linear-gradient(105deg, rgba(255,255,255,0.03), rgba(255,255,255,0.18) 40%, rgba(255,255,255,0.04) 60%, rgba(255,255,255,0.10)),
+    rgba(225,225,220,0.12);
+  -webkit-backdrop-filter: brightness(1.06) contrast(0.94);
+  backdrop-filter: brightness(1.06) contrast(0.94);
+}
+.tape--clear.tape--corner { height: clamp(14px, calc(var(--u) * 3), 52px); }
+.tape--gaffer {
+  display: flex; align-items: center; justify-content: center;
+  background:
+    repeating-linear-gradient(93deg, transparent 0 22px, rgba(255,255,255,0.05) 22px 24px, transparent 24px 50px),
+    linear-gradient(180deg, rgba(255,255,255,0.10), transparent 40%, rgba(0,0,0,0.25)),
+    #29211b;
+}
+.tape__label {
+  font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400;
+  font-size: clamp(0.62rem, calc(var(--u) * 1.15), 1.05rem);
+  letter-spacing: 0.02em; color: rgba(240,229,206,0.85); white-space: nowrap;
+}
+.tape--blush {
+  background:
+    repeating-linear-gradient(100deg, transparent 0 16px, rgba(255,255,255,0.10) 16px 18px, transparent 18px 38px),
+    linear-gradient(180deg, rgba(255,255,255,0.18), transparent 50%, rgba(60,20,10,0.12)),
+    rgba(196,136,108,0.80);
+}
+
+/* ---- masking-tape arrow ---- */
+.scrapbook__arrow {
+  position: absolute; z-index: 4; pointer-events: none;
+  left: calc(var(--u) * 6); top: 58%;
+  width: calc(var(--u) * 24); height: calc(var(--u) * 10);
+  transform: rotate(-6deg);
+}
+.scrapbook__arrow .tape {
+  top: calc(50% - clamp(14px, calc(var(--u) * 3.1), 56px) / 2);
+  right: 0; transform-origin: calc(100% - clamp(7px, calc(var(--u) * 1.55), 28px)) 50%;
+}
+.scrapbook__arrow .arrow__shaft { width: 100%; }
+.scrapbook__arrow .arrow__head { width: 42%; }
+.scrapbook__arrow .arrow__head--up { transform: rotate(38deg); }
+.scrapbook__arrow .arrow__head--down { transform: rotate(-38deg); }
+
+/* ---- phones: close-up on top, two prints under it ---- */
+@media (max-width: 767px) {
+  .scrapbook { --u: 2.4vw; }
+  .scrapbook__strip {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 18px;
+    width: auto; left: 0; transform: none;
+    padding: 0 24px;
+  }
+  .scrapbook__strip .print { height: auto; aspect-ratio: 3 / 4; }
+  .scrapbook__strip .scrapbook__p2 { grid-column: 1 / -1; grid-row: 1; aspect-ratio: 11 / 8; }
+  .scrapbook__p4, .scrapbook__arrow { display: none; }
+}
